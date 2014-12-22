@@ -36,7 +36,7 @@ describe Mastermind::Console do
 
   it 'puts directions to console' do
     console.put_directions
-    expect($stdout.string).to match("Guess a code of 4 from colors { Red Yellow Blue Green Black White }, you have 7 tries to win...")
+    expect($stdout.string).to match("Guess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win.")
   end
 
   #setup
@@ -59,11 +59,17 @@ describe Mastermind::Console do
     console.put_secret_code
     expect($stdout.string).to match("Secret code generated #{@secret_code}")
   end
+=begin
+  it 'each guess is 4 elements' do
+    console.receive_input(["Red","Red","Red","Red"])
+    console.guess
+  end
+
 
   #Maybe you can move everything inside the while except the sleep to another method, then you write specs only for that method
 
 
-=begin
+
   it 'setup assigns secret_code for game' do
     console.setup
     expect(@secret_code).not_to be_empty #calls [].empty?

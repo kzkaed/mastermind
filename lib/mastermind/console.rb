@@ -25,7 +25,7 @@ class Console
         puts "Secret code generated #{@secret_code}"
     end
     def put_directions
-        puts "Guess a code of 4 from colors { Red Yellow Blue Green Black White }, you have 7 tries to win..."
+        puts "Guess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win."
     end
 
     def setup
@@ -49,11 +49,16 @@ class Console
         puts "Enter color #{guess_num}"
     end
 
-    def receive_input(guess)
-
-       guess << gets.chomp
-       @guess = guess
+    def receive_input(guess, guess_index)
+       guess[guess_index] = gets.chomp
+       guess
       #do a hash of guess to store all guesses
+    end
+
+    def make_guess_container (guess, count)
+        #guesses_all = {}
+        #guesses_all << guess, count
+        #hold off on this for now, next iteration
     end
 
     def put_response
@@ -73,8 +78,15 @@ class Console
         puts "Your guess is #{@code_maker.guess}"
     end
 
-    def play(game)
+    def validate_guess (guess)
+        #validates guess within parameters - validate outside of loop?
+        guess_validated = @code_maker.validate_guess(guess)#also saves guess in CodeMaker- hmm best place to keep it?
+        guess_validated
+    end
 
+    def play(game)
+    guess = []
+    response = []
     put_welcome
     setup
     put_secret_code
@@ -83,13 +95,13 @@ class Console
     while !@end_of_game do
         (1..4).each do |guess_num |
             put_prompt(guess_num)
-            receive_input(@guess)
+            guess = receive_input(guess, guess_num - 1)
         end
 
-        #validates guess within parameters
-        @code_maker.validate_guess(@guess)
+        validate_guess(guess)
         put_guess
-        receive_response
+        @response = @code_maker.receive_guess(@code_maker.guess)
+        #receive_response
         put_response
 
         #increments guess

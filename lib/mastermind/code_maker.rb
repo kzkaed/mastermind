@@ -65,6 +65,7 @@ module Mastermind
       check_colors_are_correct(process_guess)
 
       @guess = process_guess
+      process_guess
     end
 
     def receive_guess(guess_array)
