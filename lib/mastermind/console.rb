@@ -13,19 +13,29 @@ class Console
     @secret_code #private to console or just pass as parameter
     @code_maker
 
-    def code
-        false
+=begin
+    def initialize(io)
+        @io = io
+    end
+=end
+    def initialize
+
     end
 
     def put_welcome
         puts "Welcome to Mastermind"
     end
 
-    def put_secret_code
-        puts "Secret code generated #{@secret_code}"
+    def put_secret_code_generated
+        puts "Secret code generated"
     end
+
     def put_directions
         puts "Guess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win."
+    end
+
+    def put_secret_code
+        puts "#{@secret_code}"
     end
 
     def setup
@@ -89,7 +99,9 @@ class Console
     response = []
     put_welcome
     setup
-    put_secret_code
+    put_secret_code_generated
+    put_secret_code #testing
+
     put_directions
 
     while !@end_of_game do
@@ -99,6 +111,8 @@ class Console
         end
 
         validate_guess(guess)
+        put_secret_code #testing
+
         put_guess
         @response = @code_maker.receive_guess(@code_maker.guess)
         #receive_response
