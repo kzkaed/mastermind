@@ -6,7 +6,7 @@ module Mastermind
 
     def initialize
       @outputs = []
-
+      @inputs = nil
     end
 
     def in
@@ -26,7 +26,7 @@ module Mastermind
     end
 
     def in
-      gets
+      gets.chomp
     end
 
     def out(message)

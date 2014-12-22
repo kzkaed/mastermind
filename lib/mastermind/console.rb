@@ -38,7 +38,7 @@ class Console
         puts "#{@secret_code}"
     end
 
-    def setup
+    def setup #why not just initialize
         begin
             code_maker = Mastermind::CodeMaker.new
             code_maker.generate_random_code
@@ -90,8 +90,7 @@ class Console
 
     def validate_guess (guess)
         #validates guess within parameters - validate outside of loop?
-        guess_validated = @code_maker.validate_guess(guess)#also saves guess in CodeMaker- hmm best place to keep it?
-        guess_validated
+        @code_maker.validate_guess(guess)#also saves guess in CodeMaker- hmm best place to keep it?
     end
 
     def play(game)
@@ -150,8 +149,6 @@ class Console
 
 end
 
-    class MockConsoleUI
 
-    end
 end
 
