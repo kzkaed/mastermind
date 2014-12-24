@@ -17,6 +17,7 @@ class Console
     @guess
     @message
     #@response
+    @first_time_to_guess_again
 
 =begin
     def initialize(io)
@@ -40,7 +41,7 @@ class Console
             @secret_code = secret_code
 
             @end_of_game = false
-            @current_guess = 0
+            @current_guess = 1
 
     end
 
@@ -52,8 +53,10 @@ class Console
         put_secret_code_generated#
         put_secret_code #testing#
         put_directions#
-
+        
         while !@end_of_game do
+            put_current_guess_num
+            
             (1..4).each do |guess_num |
                 put_prompt(guess_num)#
                 guess = receive_input(guess, guess_num - 1)#test user input via MockIO
@@ -73,7 +76,7 @@ class Console
 
             #increments guess
             @current_guess += 1
-            put_current_guess_num
+            #put_current_guess_num
 
             #checks if game over
             @end_of_game = game_over(@current_guess, @response)
@@ -105,13 +108,17 @@ class Console
         message = validate_guess(guess)
         if message == 'Incorrect Color'
             put_incorrect_colors_message
-            get_guess_again
+            guess_again
         end
         guess
     end
 
     def guess_again
-        @current_guess -= 1
+
+        
+            @current_guess -= 1
+            
+        
     end
 
     def put_incorrect_colors_message

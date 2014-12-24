@@ -83,9 +83,9 @@ describe Mastermind::Console do
 
 
   it 'guess again by decrement current_guess' do
-    console.current_guess = 1
+    console.current_guess = 2
     console.guess_again
-    expect(console.current_guess).to eq(0)
+    expect(console.current_guess).to eq(1)
 
   end
 =begin
@@ -126,9 +126,9 @@ describe Mastermind::Console do
     expect(console.end_of_game).to be false
   end
 
-  it 'current_guess is  0 in setup' do
+  it 'current_guess is  1 in setup' do
     console.setup
-    expect(console.current_guess).to eq(0)
+    expect(console.current_guess).to eq(1)
   end
 
 
