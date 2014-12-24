@@ -80,9 +80,12 @@ describe Mastermind::Console do
    expect($stdout.string).to match('Incorrect Color')
  end
 
-  it 'gets guess again if Incorrect Color message' do
-    console.get_guess_again
 
+
+  it 'guess again by decrement current_guess' do
+    console.current_guess = 1
+    console.guess_again
+    expect(console.current_guess).to eq(0)
 
   end
 =begin

@@ -110,8 +110,8 @@ class Console
         guess
     end
 
-    def get_guess_again
-
+    def guess_again
+        @current_guess -= 1
     end
 
     def put_incorrect_colors_message
