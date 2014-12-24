@@ -17,7 +17,7 @@ class Console
     @guess
     @message
     #@response
-    @first_time_to_guess_again
+    
 
 =begin
     def initialize(io)
@@ -56,20 +56,19 @@ class Console
         
         while !@end_of_game do
             put_current_guess_num
-            
-            (1..4).each do |guess_num |
-                put_prompt(guess_num)#
-                guess = receive_input(guess, guess_num - 1)#test user input via MockIO
-            end
 
+            guess = put_user_prompt_and_get_user_guess_input (guess)#transformation, event, or boolean?
+            
 
             validated_guess = check_for_color_message(guess)
 
 
             put_secret_code #testing#
 
-            put_guess
+            put_guess#whats better to pass arg or use state?
 
+
+            
             @response = @code_maker.receive_guess(@code_maker.guess)#receive_response
 
             put_response
@@ -84,6 +83,15 @@ class Console
         @game = game
     end
 
+    def put_user_prompt_and_get_user_guess_input (guess)#transformation, event, or boolean?
+            (1..4).each do |guess_num |
+                put_prompt(guess_num)#
+                guess = receive_input(guess, guess_num - 1)#test user input via MockIO
+            
+            end
+
+            guess
+        end
 
     def game_over(current_guess, response)
         guess_max = 8
@@ -114,11 +122,7 @@ class Console
     end
 
     def guess_again
-
-        
             @current_guess -= 1
-            
-        
     end
 
     def put_incorrect_colors_message
@@ -162,9 +166,9 @@ class Console
         puts "The response is #{@code_maker.response.inspect}"
     end
 
-    def receive_response
+    def receive_response(validated_guess)
         #check guess against code and return pegs
-        @response = @code_maker.receive_guess(@code_maker.guess)
+        @response = @code_maker.receive_guess(validated_guess)
     end
 
     def put_current_guess_num

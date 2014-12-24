@@ -88,6 +88,21 @@ describe Mastermind::Console do
     expect(console.current_guess).to eq(1)
 
   end
+
+  
+
+=begin
+
+  it 'put_user_prompt_and_get_user_guess_input should return 4 elements in array' do
+      guess = []
+      guess = console.put_user_prompt_and_get_user_guess_input(guess)
+      expect(guess.length).to  eq(4)
+  end
+=end
+
+  it 'receive_response should return response' do
+
+  end
 =begin
   it 'validates guess colors with check_for_message' do
     console.check_for_color_message

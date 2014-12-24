@@ -70,34 +70,43 @@ module Mastermind
         return message
       end
 
-      @guess = process_guess
+      @guess = process_guess#don't save state and return
       process_guess
     end
 
     def receive_guess(guess_array)
-      response = []#response is stored in array and returned
+      response = ["","","",""]#response is stored in array and returned - set response to empty for each
       hold = secret_code.clone
 
       guess_array.each_with_index do |guess, index|#iterate over guess_array do guess element and generate index
         if guess == secret_code[index]
-          response << "Black"
-          guess_array[index] = "matched" #instead of deleting it, flag "matched" to keep array size the same
-          secret_code[index] = "matched"
-
-        elsif secret_code.include?(guess)
-          response << "White"
-          guess_array[index] = "matched"
-          index_to_match = secret_code.index(guess)
-          secret_code[index_to_match] = "matched"
-
-        else
-          response << ""
-
+          response[index] = "Black"
+          guess_array[index] = "gm" #instead of deleting it, flag "matched" to keep array size the same
+          secret_code[index] = "cm"
         end
       end
+      #print "g",guess_array#[m m Y m]
+      #print "c",secret_code#[m m B m] 
+      #print "r",response   #[b b " b]   
+
+      guess_array.each_with_index do |guess, index|
+        if secret_code.include?(guess)
+          response[index] = "White"
+          guess_array[index] = "gm"
+          index_to_match = secret_code.index(guess)
+          secret_code[index_to_match] = "cm"
+          #print guess_array
+          #print secret_code
+        end
+      end
+      #print guess_array
+      print "before",secret_code
+      #print response
+      
       @secret_code = hold
-      @response = response
-      response
+      print "after",@secret_code
+      @response = response.sort
+      response.sort
     end
 
     private
