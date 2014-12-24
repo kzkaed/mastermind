@@ -85,13 +85,13 @@ describe Mastermind::Console do
 
 
   end
-
+=begin
   it 'validates guess colors with check_for_message' do
     console.check_for_color_message
 
   end
 
-=begin
+
 
     it 'code_maker is not nil' do
       console.setup
