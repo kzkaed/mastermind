@@ -24,7 +24,7 @@ module Mastermind
     attr_accessor :random_nums
     attr_accessor :response
     attr_accessor :guess
-    attr_accessor :error_message
+    attr_accessor :message
 
 
     COLORS = ["Red", "Yellow", "Black", "White", "Blue", "Green"]#5
@@ -62,7 +62,13 @@ module Mastermind
       process_guess = format_guess (guess_array)
 
       #check colors are correct - so make check_colors_are_correct more generic
-      check_colors_are_correct(process_guess)
+
+      message = check_colors_are_correct(process_guess)
+      if message != nil
+        @message = message
+        @guess = []
+        return message
+      end
 
       @guess = process_guess
       process_guess
@@ -102,9 +108,19 @@ module Mastermind
     end
 
     def check_colors_are_correct(code_array)
+      message = nil
       code_array.each do |code|
-        raise InvalidCode.new("Incorrect colors") if !COLORS.include?(code)
+
+        if !COLORS.include?(code)
+          #raise InvalidCode.new("Incorrect colors")
+          message = "Incorrect Color"
+
+        end
+
+
+
       end
+      message
     end
 
     def in_correct_position_and_color?(guess, index)

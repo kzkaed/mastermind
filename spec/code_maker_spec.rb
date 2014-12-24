@@ -38,10 +38,6 @@ describe Mastermind::CodeMaker do
     expect(code_maker.secret_code).to include "Yellow", "Black", "White", "Blue"
   end
 
-  it 'makes sure the pegs are the right colors' do
-    expect {code_maker.place_code(["Red", "Red", "Red", "Cyan"])}.to raise_error(Mastermind::InvalidCode, "Incorrect colors")
-    #code_maker.place_random is never going to be wrong color because assertion above shows only takes colors form COLORS
-  end
 
   #guesses
   it 'all guesses are processed in capitalize format' do
@@ -49,10 +45,23 @@ describe Mastermind::CodeMaker do
     code_maker.validate_guess(["red","RED","reD", "Red"])
     expect(code_maker.guess).to match_array(["Red","Red","Red","Red"])
   end
-
+=begin
   it 'processed guess is a correct color' do
     expect {code_maker.validate_guess(["Cyan","Red","Red" "Red"])}.to raise_error(Mastermind::InvalidCode, "Incorrect colors")
   end
+=end
+  it 'processed guess is not a correct color' do
+    code_maker.validate_guess(["Cyan","Red","Red" "Red"])
+    expect(code_maker.message).to eq("Incorrect Color")
+  end
+
+  it 'guess not correct color send message to console but not guess' do
+    code_maker.validate_guess(["Cyan","Red","Red" "Red"])
+    expect(code_maker.guess).to eq([])
+
+  end
+
+
 
 
   #handle Exceptions

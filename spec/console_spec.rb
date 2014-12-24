@@ -39,7 +39,7 @@ describe Mastermind::Console do
 =end
 
 
-  it 'puts to console Welcome to Mastermind' do
+  it 'puts to console message: Welcome to Mastermind' do
     console.put_welcome
     expect($stdout.string).to match("Welcome to Mastermind")
   end
@@ -49,27 +49,73 @@ describe Mastermind::Console do
     expect($stdout.string).to match("#{@secret_code}")
   end
 
-  it 'puts directions to console' do
+  it 'puts to console message: directions' do
     console.put_directions
     expect($stdout.string).to match("Guess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win.")
   end
 
-  it 'puts prompt for Enter color for input' do
+  it 'puts user prompt message: Enter color 1' do
     console.put_prompt(1)
     expect($stdout.string).to match("Enter color 1")
   end
+
+  it 'puts user prompt message: Enter color 4' do
+    console.put_prompt(4)
+    expect($stdout.string).to match("Enter color 4")
+  end
+
+  it 'puts to console message: secret code generated' do
+    console.put_secret_code_generated
+    expect($stdout.string).to match("Secret code generated")
+  end
+
+  it 'puts to console the secret code' do
+    console.put_secret_code
+    expect($stdout.string).to match("#{@secret_code}")
+  end
+
+
+ it 'puts to console message Incorrect Color'do
+   console.put_incorrect_colors_message
+   expect($stdout.string).to match('Incorrect Color')
+ end
+
+  it 'gets guess again if Incorrect Color message' do
+    console.get_guess_again
+
+
+  end
+
+  it 'validates guess colors with check_for_message' do
+    console.check_for_color_message
+
+  end
+
 =begin
-  it 'receive_input gets input' do
-    console.receive_input([],0)
-    user_input = "Red"
-    expect(console.receive_input.guess).to match_array(["Red"])
+
+    it 'code_maker is not nil' do
+      console.setup
+      expect(console.code_maker).not_to eq(nil)
+    end
+
+
+  it 'secret_code is not nil' do
+    console.setup
+    expect(console.secret_code).not_to eq(nil)
   end
 =end
 
-  #setup - test more
+
+
+
+
+
+
+  #setup - test more - called from initialze?
   it 'makes new Mastermind::CodeMaker object and assigns to code_maker in setup' do
     expect{console.setup}.not_to raise_error
   end
+
 
 
   it 'end_of_game starts false in setup' do
@@ -82,10 +128,7 @@ describe Mastermind::Console do
     expect(console.current_guess).to eq(0)
   end
 
-  it 'puts to console secret code' do
-    console.put_secret_code
-    expect($stdout.string).to match("#{@secret_code}")
-  end
+
 
 
 
