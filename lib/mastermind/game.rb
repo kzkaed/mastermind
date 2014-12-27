@@ -1,38 +1,34 @@
 module Mastermind
 
   class Game
-    attr_accessor :console_ui
+    
 
     def initialize
-
-      @game = true;
-
+      
     end
 
-    def run
-      @game
+
+  
+    def end_of_game?(current_guess, response)
+        guess_max = 8
+
+        if current_guess == guess_max
+            end_of_game = true
+            puts "YOU LOST!"
+            
+        else
+            if response == ["Black", "Black", "Black", "Black"]
+                puts "YOU WON!"
+                end_of_game = true
+            else
+                end_of_game = false
+            end
+        end
+        end_of_game
     end
 
-  #UIConsle is going to hold the while loop
-
-  #ask code_maker to generate code
-  #
-    #max guesses
-    #current guesses
-    #make guess
-    #def endgame?
-    #
-     # if max guesses == current_guesses
-      #end game
-      #OR
-      #if guess == code
-      #end game
-  #print results
 
 
-
-      def game_over
-        @console_ui.put("game over")
-      end
-    end
+  
+  end
 end

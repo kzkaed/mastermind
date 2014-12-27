@@ -24,11 +24,11 @@ describe Mastermind::Console do
   # mock to test against
   before do
     $stdout = StringIO.new #assign a new StringIO instance to var stdout
-
+    $stdin = StringIO.new
   end
   after(:all) do
     $stdout = STDOUT
-
+    $stdin = STDIN
   end
 
 
@@ -75,10 +75,15 @@ describe Mastermind::Console do
   end
 
 
+
  it 'puts to console message Incorrect Color'do
    console.put_incorrect_colors_message
    expect($stdout.string).to match('Incorrect Color')
  end
+
+it 'puts to console message: your guess is with guess' do
+
+end
 
 
 
@@ -89,44 +94,10 @@ describe Mastermind::Console do
 
   end
 
-  
-
-=begin
-
-  it 'put_user_prompt_and_get_user_guess_input should return 4 elements in array' do
-      guess = []
-      guess = console.put_user_prompt_and_get_user_guess_input(guess)
-      expect(guess.length).to  eq(4)
-  end
-=end
 
   it 'receive_response should return response' do
 
   end
-=begin
-  it 'validates guess colors with check_for_message' do
-    console.check_for_color_message
-
-  end
-
-
-
-    it 'code_maker is not nil' do
-      console.setup
-      expect(console.code_maker).not_to eq(nil)
-    end
-
-
-  it 'secret_code is not nil' do
-    console.setup
-    expect(console.secret_code).not_to eq(nil)
-  end
-=end
-
-
-
-
-
 
 
   #setup - test more - called from initialze?
@@ -134,47 +105,9 @@ describe Mastermind::Console do
     expect{console.setup}.not_to raise_error
   end
 
-
-
-  it 'end_of_game starts false in setup' do
-    console.setup
-    expect(console.end_of_game).to be false
-  end
-
   it 'current_guess is  1 in setup' do
     console.setup
     expect(console.current_guess).to eq(1)
   end
-
-
-
-
-
-
-
-=begin
-  it 'each guess is 4 elements' do
-    console.receive_input(["Red","Red","Red","Red"])
-    console.guess
-  end
-
-
-  #Maybe you can move everything inside the while except the sleep to another method, then you write specs only for that method
-
-
-
-  it 'setup assigns secret_code for game' do
-    console.setup
-    expect(@secret_code).not_to be_empty #calls [].empty?
-  end
-=end
-
-
-
-
-
-
-
-
 
 end
