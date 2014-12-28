@@ -12,6 +12,8 @@ module Mastermind
     attr_accessor :message
 
 
+
+
     COLORS = ["Red", "Yellow", "Black", "White", "Blue", "Green"]
     GUESS_MATCH = "guess_match"
     CODE_MATCH = "code_match"
@@ -28,7 +30,6 @@ module Mastermind
       check_pegs_size (secret_code)
       check_colors_are_correct (secret_code)
       @secret_code = secret_code
-      secret_code
     end
 
     def place_code (secret_code)  
@@ -37,21 +38,21 @@ module Mastermind
       @secret_code = secret_code
     end
 
-    def validate_guess(guess_array)
+    def validate_and_place_guess(guess_array)
       process_guess = []
       process_guess = format_guess (guess_array)
 
       message = check_colors_are_correct(process_guess)
       if message != nil
-        @message = message
         @guess = []
+        @message = message
         return message
       end
 
       @guess = process_guess
     end
 
-    def receive_guess(guess_array)
+    def determine_and_place_response(guess_array)
       response = ["","","",""]
       hold_original_secret_code = secret_code.clone
 
@@ -115,7 +116,7 @@ module Mastermind
     def format_guess (guess_array)
       process_guess = []
       guess_array.each_index do |index|
-        process_guess[index] = guess_array[index].to_s.capitalize
+        process_guess[index] = guess_array[index].to_s.capitalize.strip
       end
       process_guess
     end

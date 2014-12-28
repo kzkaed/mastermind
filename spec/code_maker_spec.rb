@@ -38,18 +38,18 @@ describe Mastermind::CodeMaker do
 
 
   it 'all guesses are processed in capitalize format' do
-    code_maker.validate_guess(["red","RED","reD", "Red"])
+    code_maker.validate_and_place_guess(["red","RED","reD", "Red"])
     expect(code_maker.guess).to match_array(["Red","Red","Red","Red"])
   end
 
 
   it 'returns message if guess is not a correct color in validate_guess' do
-    code_maker.validate_guess(["Cyan","Red","Red" "Red"])
+    code_maker.validate_and_place_guess(["Cyan","Red","Red" "Red"])
     expect(code_maker.message).to eq("Incorrect Color")
   end
 
   it 'sets guess to empty if guess is not correct color in validate_guess' do
-    code_maker.validate_guess(["Cyan","Red","Red" "Red"])
+    code_maker.validate_and_place_guess(["Cyan","Red","Red" "Red"])
     expect(code_maker.guess).to eq([])
 
   end
@@ -61,54 +61,54 @@ describe Mastermind::CodeMaker do
 
   it 'guess is all one color and code is random' do
     code_maker.secret_code = ["Red","Blue","Yellow","Yellow"]
-    expect(code_maker.receive_guess(["Red", "Red", "Red", "Red"])).to match_array(["Black","","",""])
+    expect(code_maker.determine_and_place_response(["Red", "Red", "Red", "Red"])).to match_array(["Black","","",""])
   end
 
   it 'guesses 1 black match' do
     code_maker.secret_code = ["Red", "Red", "Red", "Red"]
-    expect(code_maker.receive_guess(["Red","Green","Yellow","Blue"])).to match_array(["Black", "","",""])
+    expect(code_maker.determine_and_place_response(["Red","Green","Yellow","Blue"])).to match_array(["Black", "","",""])
 
   end
 
 
   it 'guesses 2 black match' do
     code_maker.secret_code = ["Red", "Red", "Red", "Red"]
-    expect(code_maker.receive_guess(["Red","Red","Yellow","Blue"])).to match_array(["Black","Black","",""])
+    expect(code_maker.determine_and_place_response(["Red","Red","Yellow","Blue"])).to match_array(["Black","Black","",""])
   end
 
   it 'guesses 1 match with yellow and index offset' do
     code_maker.secret_code = ["Yellow", "Blue", "Yellow", "Yellow"]
-    expect(code_maker.receive_guess(["Yellow","Yellow","Blue","Blue"])).to match_array(["Black","White","White",""])
+    expect(code_maker.determine_and_place_response(["Yellow","Yellow","Blue","Blue"])).to match_array(["Black","White","White",""])
 
   end
 
   it 'guesses 4 match with red' do
     code_maker.secret_code = ["Red", "Red", "Red", "Red"]
-    expect(code_maker.receive_guess(["Red","Red","Red","Red"])).to match_array(["Black","Black","Black","Black"])
+    expect(code_maker.determine_and_place_response(["Red","Red","Red","Red"])).to match_array(["Black","Black","Black","Black"])
   end
 
   it 'guesses right color and wrong spot returns white' do
     code_maker.secret_code = ["Red", "Blue", "Green", "Yellow"]
-    expect(code_maker.receive_guess(["White","Red","White","White"])).to match_array(["","White", "", ""])
+    expect(code_maker.determine_and_place_response(["White","Red","White","White"])).to match_array(["","White", "", ""])
   end
 
   it 'verifies that secret code is original code after receive_guess' do
     code_maker.secret_code = ["Red", "Red", "Red", "Red"]
-    expect(code_maker.receive_guess(["Red","Red","Red","Red"])).to match_array(["Black","Black","Black","Black"])
+    expect(code_maker.determine_and_place_response(["Red","Red","Red","Red"])).to match_array(["Black","Black","Black","Black"])
     expect(code_maker.secret_code).to match_array(["Red", "Red", "Red", "Red"])
 
   end
 
   it 'if duplicate colors in guess, cannot be awarded a key peg' do
     code_maker.secret_code = ["White", "White", "Black", "Black"]
-    expect(code_maker.receive_guess(["White","White","White","Black"])).to match_array(["Black","Black", "", "Black"])
+    expect(code_maker.determine_and_place_response(["White","White","White","Black"])).to match_array(["Black","Black", "", "Black"])
 
   end
 
 
   it 'if duplicate colors in guess, cannot be awarded key peg in different order' do
     code_maker.secret_code = ["Yellow","Black","Black","Yellow"]
-    expect(code_maker.receive_guess(["Yellow","Black","Yellow","Yellow"])).to match_array(["Black","Black", "", "Black"])
+    expect(code_maker.determine_and_place_response(["Yellow","Black","Yellow","Yellow"])).to match_array(["Black","Black", "", "Black"])
   end
 
 

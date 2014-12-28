@@ -12,7 +12,7 @@ describe Mastermind::Game do
   end
 
   it 'finds end of game with current_guess maximum 8' do
-    expect(game.end_of_game?(8, ["","","",""])).to eq(true)
+    expect(game.end_of_game?(9, ["","","",""])).to eq(true)
   end
 
 

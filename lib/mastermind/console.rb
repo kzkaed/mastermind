@@ -5,56 +5,44 @@ module Mastermind
 
 class Console
     
-    attr_accessor :current_guess
+    attr_accessor :current_guess_number
     attr_reader :response
+    attr_reader :code_maker
 
-    @code_maker
-    @secret_code
-    @guess
-    @message
-    
 
+    WELCOME = "Welcome to Mastermind"
+    SECRET_CODE_GEN = "Secret Code has been Generated"
+    DIRECTIONS = "Guess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win."
+    INCORRECT_COLOR_MESSAGE = "Incorrect colors, guess again using |Red Yellow Blue Green Black White|"
     def initialize
-        setup
-        @current_guess = 1
-        @response = []
-    end
 
-    def setup
         code_maker = Mastermind::CodeMaker.new
         code_maker.generate_random_code
-        secret_code = code_maker.place_generated_code
+        code_maker.place_generated_code
 
         @code_maker = code_maker
-        @secret_code = secret_code
+        @current_guess_number = 1
+        @response = []
 
-        @guess = []
-        #@response = []
+
     end
 
-
     def play(game)
-        guess = []
-        response = []
-        
-        put_welcome
-        put_secret_code_generated
-        put_directions
-    
-        #why do I need response passed? response is an empty array
-        while !game.end_of_game?(@current_guess, @response) do
-            put_current_guess_num
 
-            validated_guess = gets_validated_guess_from_user (guess)
+        out (WELCOME)
+        out (SECRET_CODE_GEN)
+        out (DIRECTIONS)
+        out_secret_code(@code_maker.secret_code)
 
-            put_secret_code #testing#
-            put_guess
+        until game.end_of_game?(@current_guess_number, @response) do
 
-            @response = @code_maker.receive_guess(@code_maker.guess)#receive_response
-
-            put_response
-            
-            @current_guess += 1
+            out_current_guess_number(@current_guess_number)
+            in_guess_from_user_with_validation
+            out_secret_code(@code_maker.secret_code) #testing#
+            out_guess(@code_maker.guess)
+            @response = @code_maker.determine_and_place_response(@code_maker.guess)
+            out_response(@code_maker.response)
+            @current_guess_number += 1
            
         end
         
@@ -64,80 +52,63 @@ class Console
     end
 
     def in
-       message =  gets.chomp
-    end
-    
-    def put_welcome
-        puts "Welcome to Mastermind"
+       gets.chomp
     end
 
-    def put_secret_code_generated#
-        puts "Secret code generated"
+    def out_secret_code(secret_code)
+        out "#{secret_code}"
     end
 
-    def put_directions
-        puts "Guess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win."
+    def out_current_guess_number(current_guess_number)
+        out "Guess number #{current_guess_number}"
     end
-
-    def put_secret_code
-        puts "#{@secret_code}"
-    end
-
 
     def put_prompt(guess_num)
         puts "Enter color #{guess_num}"
     end
 
     #here
-    def gets_validated_guess_from_user (guess)
-        (1..4).each do |guess_num |
-            put_prompt(guess_num)
-            guess = receive_input(guess, guess_num - 1)
+    def in_guess_from_user_with_validation
+        guess = []
+        (1..4).each do |enter_color |
+            put_prompt(enter_color)
+            guess = receive_user_input(guess, enter_color - 1)
         end
-        validated_guess = if_wrong_color_message_guess_again(guess)
-    end 
 
-    def receive_input(guess, guess_index)
-       guess[guess_index] = gets.chomp
+        message = @code_maker.validate_and_place_guess(guess)
+
+        check_and_guess_again?(message)
+    end
+
+    def check_and_guess_again?(message)
+
+        if message == 'Incorrect Color'
+            out (INCORRECT_COLOR_MESSAGE)
+            guess_again
+            return true
+        end
+      false
+    end
+
+
+    def guess_again
+        @current_guess_number -= 1
+    end
+
+    def receive_user_input(guess, index)
+       guess[index] = gets.chomp
        guess
     end
 
-    def if_wrong_color_message_guess_again(guess)
-        message = validate_guess(guess)
-        if message == 'Incorrect Color'
-            put_incorrect_colors_message
-            guess_again
-        end
-        guess
+    def out_guess(guess)
+        out "Your guess is #{guess}"
     end
 
-    def validate_guess (guess)
-        message = @code_maker.validate_guess(guess)
+    def out_response(response)
+        out "The response is #{response}"
     end
 
-    def put_guess
-        puts "Your guess is #{@code_maker.guess}"
-    end
 
-    def put_response
-        puts "The response is #{@code_maker.response.inspect}"
-    end
-
-    def receive_response
-        @response = @code_maker.receive_guess(@code_maker.guess)
-    end
-
-    def put_current_guess_num
-        puts "Guess number #{@current_guess}"
-    end
-
-    def guess_again
-        @current_guess -= 1
-    end
-
-    def put_incorrect_colors_message
-        puts "Incorrect Colors"
-    end
 
 end
 

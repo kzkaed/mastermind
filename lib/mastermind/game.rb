@@ -4,17 +4,12 @@ module Mastermind
 
 
 
-    def initialize
-      
-
-    end
-
 
   
-    def end_of_game?(current_guess, response)
-        guess_max = 8
+    def end_of_game?(current_guess_number, response)
+        guess_max = 9
 
-        if current_guess == guess_max
+        if current_guess_number == guess_max
             end_of_game = true
             puts "YOU LOST!"
             
