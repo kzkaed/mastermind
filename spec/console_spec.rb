@@ -1,43 +1,20 @@
 require 'spec_helper'
 require 'mastermind/console'
-
-#Mock?
 require 'stringio'
 
 describe Mastermind::Console do
 
-  #let(:mock_io) {MockIO.new}
-  #let(:console) {described_class.new(mock_io)}
 
   let(:console) { described_class.new }
 
-  #let(:user_input)
-
-  def capture_input
-    $stdin.gets.chomp
-  end
-
-
-  #overwrite StringIO? for each do
-  # - a new StringIO per test gives you
-  # an isolated standard output
-  # mock to test against
   before do
-    $stdout = StringIO.new #assign a new StringIO instance to var stdout
+    $stdout = StringIO.new
     $stdin = StringIO.new
   end
   after(:all) do
     $stdout = STDOUT
     $stdin = STDIN
   end
-
-
-=begin
-  it '' do
-    console.io.outputs
-  end
-=end
-
 
   it 'puts to console message: Welcome to Mastermind' do
     console.put_welcome
@@ -46,7 +23,7 @@ describe Mastermind::Console do
 
   it 'puts to console message: secret code generated' do
     console.put_secret_code_generated
-    expect($stdout.string).to match("#{@secret_code}")
+    expect($stdout.string).to match("Secret code generated")
   end
 
   it 'puts to console message: directions' do
@@ -64,43 +41,60 @@ describe Mastermind::Console do
     expect($stdout.string).to match("Enter color 4")
   end
 
-  it 'puts to console message: secret code generated' do
-    console.put_secret_code_generated
-    expect($stdout.string).to match("Secret code generated")
-  end
 
   it 'puts to console the secret code' do
     console.put_secret_code
     expect($stdout.string).to match("#{@secret_code}")
   end
 
+  it 'puts a message to the conole' do
+    console.out("a message")
+    expect($stdout.string).to match("a message")
+  end
+
+  it 'receives message from user via console' do
+     $stdin.string = 'message'
+     expect(console.in).to match('message')
+  end
+
+  #here
+  xit 'gets validated guess from user' do
+    $stdin.string = "red"
 
 
- it 'puts to console message Incorrect Color'do
-   console.put_incorrect_colors_message
-   expect($stdout.string).to match('Incorrect Color')
- end
+  end
 
-it 'puts to console message: your guess is with guess' do
+   it 'puts to console message Incorrect Colors if message exist'do
+     console.put_incorrect_colors_message
+     expect($stdout.string).to match('Incorrect Color')
+   end
 
-end
+  it 'console receives input and places in guess at index 0' do
+      $stdin.string = "Blue"
+      expect(console.receive_input(["Red","Red","Red","Red"], 0)).to match(["Blue","Red","Red","Red"])
+  end
 
+  it '@response is an empty array at setup' do
+    console.setup
+    expect(console.response).to eq([])
+  end
 
+  it '@response is initialized to an empty array' do
+    expect(console.response).to eq([])
+  end
 
   it 'guess again by decrement current_guess' do
     console.current_guess = 2
     console.guess_again
     expect(console.current_guess).to eq(1)
-
   end
 
 
-  it 'receive_response should return response' do
+
+  xit 'receive_response should return response' do
 
   end
 
-
-  #setup - test more - called from initialze?
   it 'makes new Mastermind::CodeMaker object and assigns to code_maker in setup' do
     expect{console.setup}.not_to raise_error
   end

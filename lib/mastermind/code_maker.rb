@@ -4,30 +4,15 @@ module Mastermind
   end
 
   class CodeMaker
-    #read/write public?
-    #attr_accessor :secret_code
-    def secret_code
-      @secret_code
-    end
-    def secret_code=(value)
-      @secret_code = value
-    end
 
-    def code_holder
-      @code_holder
-    end
-
-    def code_holder=(value)
-      @code_holder = value
-    end
-
+    attr_accessor :secret_code
     attr_accessor :random_nums
     attr_accessor :response
     attr_accessor :guess
     attr_accessor :message
 
 
-    COLORS = ["Red", "Yellow", "Black", "White", "Blue", "Green"]#5
+    COLORS = ["Red", "Yellow", "Black", "White", "Blue", "Green"]
     GUESS_MATCH = "guess_match"
     CODE_MATCH = "code_match"
 
@@ -36,20 +21,19 @@ module Mastermind
     end
 
     def place_generated_code
-      
       secret_code =[]
       @random_nums.each_index do |i|
         secret_code[i] = COLORS[@random_nums[i]]
       end
-      check_pegs_size secret_code
-      check_colors_are_correct secret_code
+      check_pegs_size (secret_code)
+      check_colors_are_correct (secret_code)
       @secret_code = secret_code
       secret_code
     end
 
     def place_code (secret_code)  
-      check_pegs_size secret_code
-      check_colors_are_correct secret_code
+      check_pegs_size (secret_code)
+      check_colors_are_correct (secret_code)
       @secret_code = secret_code
     end
 
@@ -68,29 +52,19 @@ module Mastermind
     end
 
     def receive_guess(guess_array)
-      response = ["","","",""] 
+      response = ["","","",""]
       hold_original_secret_code = secret_code.clone
 
-      guess_array.each_with_index do |guess, index|
-        if guess == secret_code[index]
-          response[index] = "Black"
-          guess_array[index] = GUESS_MATCH
-          secret_code[index] = CODE_MATCH
-        end
-      end
+      response = guess_equals_code_position_and_color(guess_array,response)
+      response = guess_contains_code_color(guess_array,response)
 
-      guess_array.each_with_index do |guess, index|
-        if secret_code.include?(guess)
-          response[index] = "White"
-          guess_array[index] = GUESS_MATCH
-          index_to_match = secret_code.index(guess)
-          secret_code[index_to_match] = CODE_MATCH         
-        end
-      end
-  
       @secret_code = hold_original_secret_code
       @response = response.sort
     end
+
+
+
+
 
     private
 
@@ -110,12 +84,32 @@ module Mastermind
       message
     end
 
-    def in_correct_position_and_color?(guess, index)
-      guess == secret_code[index]
+    def guess_equals_code_position_and_color(guess_array,response)
+
+      guess_array.each_with_index do |guess, index|
+        if guess == secret_code[index]
+          response[index] = "Black"
+          guess_array[index] = GUESS_MATCH
+          secret_code[index] = CODE_MATCH
+        end
+      end
+    response
     end
 
-    def has_color?(guess)
-      secret_code.include?(guess)
+    def guess_contains_code_color(guess_array, response)
+      guess_array.each_with_index do |guess, index|
+        if secret_code.include?(guess)
+          response[index] = "White"
+          guess_array[index] = GUESS_MATCH
+          index_to_match = secret_code.index(guess)
+          secret_code[index_to_match] = CODE_MATCH
+        end
+      end
+      response
+    end
+
+    def in_correct_position_and_color?(guess, index)
+      guess == secret_code[index]
     end
 
     def format_guess (guess_array)

@@ -1,10 +1,12 @@
 module Mastermind
 
   class Game
-    
+
+
 
     def initialize
       
+
     end
 
 
@@ -21,7 +23,7 @@ module Mastermind
                 puts "YOU WON!"
                 end_of_game = true
             else
-                end_of_game = false
+              end_of_game = false
             end
         end
         end_of_game

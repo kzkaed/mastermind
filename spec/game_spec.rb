@@ -15,6 +15,7 @@ describe Mastermind::Game do
     expect(game.end_of_game?(8, ["","","",""])).to eq(true)
   end
 
+
  
   
 end

@@ -98,13 +98,7 @@ describe Mastermind::CodeMaker do
     expect(code_maker.secret_code).to match_array(["Red", "Red", "Red", "Red"])
 
   end
-######
-#  if there are duplicate colours in the guess, they cannot all be awarded a key peg unless they correspond to the same
-#number of duplicate colours in the hidden code. For example, if the hidden code is white-white-black-black and the
-#player guesses white-white-white-black, the codemaker will award two colored key pegs for the two correct whites,
-#nothing for the third white as there is not a third white in the code, and a colored key peg for the black. No
-#indication is given of the fact that the code also includes a second black.[5]
-##
+
   it 'if duplicate colors in guess, cannot be awarded a key peg' do
     code_maker.secret_code = ["White", "White", "Black", "Black"]
     expect(code_maker.receive_guess(["White","White","White","Black"])).to match_array(["Black","Black", "", "Black"])
@@ -119,4 +113,12 @@ describe Mastermind::CodeMaker do
 
 
 
+
   end
+######
+#  if there are duplicate colours in the guess, they cannot all be awarded a key peg unless they correspond to the same
+#number of duplicate colours in the hidden code. For example, if the hidden code is white-white-black-black and the
+#player guesses white-white-white-black, the codemaker will award two colored key pegs for the two correct whites,
+#nothing for the third white as there is not a third white in the code, and a colored key peg for the black. No
+#indication is given of the fact that the code also includes a second black.[5]
+##
