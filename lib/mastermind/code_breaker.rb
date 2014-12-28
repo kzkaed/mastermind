@@ -1,6 +1,5 @@
 module Mastermind
 
-  #codebreaker
   class InvalidCode < Exception
   end
 
@@ -8,17 +7,7 @@ module Mastermind
 class CodeBreaker
 
 
-  def code
-    code = false
 
-  end
-
-
-
-  def startgame
-    puts "Welcome"
-    #STDOUT.puts("Welcome")
-  end
 
 end
 
