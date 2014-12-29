@@ -10,13 +10,10 @@ module Mastermind
         guess_max = 9
 
         if current_guess_number == guess_max
-            end_of_game = true
-            puts "YOU LOST!"
-            
+          end_of_game = true
         else
             if response == ["Black", "Black", "Black", "Black"]
-                puts "YOU WON!"
-                end_of_game = true
+              end_of_game = true
             else
               end_of_game = false
             end
@@ -26,6 +23,10 @@ module Mastermind
 
 
 
-  
+    def won?(won)
+      won
+    end
+
+
   end
 end

@@ -139,7 +139,10 @@ describe Mastermind::Console do
   end
 
 
+  it 'puts you won or you lost message' do
+    expect(console.out_won_or_lost_message(true)).to eq("YOU WON")
 
+  end
 
 
 

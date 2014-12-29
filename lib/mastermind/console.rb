@@ -45,8 +45,17 @@ class Console
             @current_guess_number += 1
            
         end
-        
     end
+
+    def out_won_or_lost_message(boolean)
+        if boolean
+            message ="YOU WON"
+        else
+            message = "YOU LOST"
+        end
+        message
+    end
+
     def out (message)
         puts (message)
     end
@@ -67,7 +76,7 @@ class Console
         puts "Enter color #{guess_num}"
     end
 
-    #here
+
     def in_guess_from_user_with_validation
         guess = []
         (1..4).each do |enter_color |

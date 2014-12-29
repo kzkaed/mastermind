@@ -16,6 +16,14 @@ describe Mastermind::Game do
   end
 
 
+
+  it 'signals won' do
+    expect(game.won?(true)).to eq(true)
+  end
  
-  
+
+  it 'set signal won to false if lost game' do
+    expect(game.won?(false)).to eq(false)
+  end
+
 end
