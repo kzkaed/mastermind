@@ -1,13 +1,12 @@
 module Mastermind
-  @won
+
   class Game
+    @won
 
     def initialize
       @won = false
     end
 
-
-  
     def end_of_game?(current_guess_number, response)
         guess_max = 9
 
