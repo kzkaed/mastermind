@@ -14,17 +14,14 @@ class Console
     SECRET_CODE_GEN = "Secret Code has been Generated"
     DIRECTIONS = "Guess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win."
     INCORRECT_COLOR_MESSAGE = "Incorrect colors, guess again using |Red Yellow Blue Green Black White|"
-    def initialize
 
+    def initialize
         code_maker = Mastermind::CodeMaker.new
         code_maker.generate_random_code
         code_maker.place_generated_code
-
         @code_maker = code_maker
         @current_guess_number = 1
         @response = []
-
-
     end
 
     def play(game)
@@ -85,14 +82,11 @@ class Console
             put_prompt(enter_color)
             guess = receive_user_input(guess, enter_color - 1)
         end
-
         message = @code_maker.validate_and_place_guess(guess)
-
         check_and_guess_again?(message)
     end
 
     def check_and_guess_again?(message)
-
         if message == 'Incorrect Color'
             out (INCORRECT_COLOR_MESSAGE)
             guess_again
@@ -118,8 +112,6 @@ class Console
     def out_response(response)
         out "The response is #{response}"
     end
-
-
 
 end
 

@@ -17,8 +17,6 @@ describe Mastermind::Console do
     $stdin = STDIN
   end
 
-
-
   it '@code_maker is initialized' do
     expect(console.code_maker).not_to be_nil
   end
@@ -30,7 +28,6 @@ describe Mastermind::Console do
   it '@response is initialized to an empty array' do
     expect(console.response).to eq([])
   end
-
 
   it 'uses console out to put a message to the console' do
     console.out('a message')
@@ -85,7 +82,6 @@ describe Mastermind::Console do
     expect(console.code_maker.guess).to eq(guess)
   end
 
-
   it 'puts user prompt message: Enter color 1' do
     console.put_prompt(1)
     expect($stdout.string).to match("Enter color 1")
@@ -95,9 +91,6 @@ describe Mastermind::Console do
     console.put_prompt(4)
     expect($stdout.string).to match("Enter color 4")
   end
-
-
-
 
   it 'console receives input and places in guess at index ' do
       $stdin.string = "Blue"
@@ -119,18 +112,13 @@ describe Mastermind::Console do
     expect(console.receive_user_input([], 2)).to eq([nil,nil,"Blue"])
     $stdin.string = "Blue"
     expect(console.receive_user_input([], 3)).to eq([nil,nil,nil,"Blue"])
-
   end
-
-
 
   it 'message checks for message' do
     expect(console.check_and_guess_again?('')).to eq(false)
     expect(console.check_and_guess_again?('Incorrect Color')).to eq(true)
 
   end
-
-
 
   it 'guess again by decrement current_guess' do
     console.current_guess_number = 2
@@ -153,7 +141,5 @@ describe Mastermind::Console do
     console.out_won_or_lost_message(false)
     expect($stdout.string).to match("YOU LOST")
   end
-
-
 
 end
