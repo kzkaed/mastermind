@@ -154,4 +154,6 @@ describe Mastermind::Console do
     expect($stdout.string).to match("YOU LOST")
   end
 
+
+
 end

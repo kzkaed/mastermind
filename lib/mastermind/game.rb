@@ -1,8 +1,10 @@
 module Mastermind
-
+  @won
   class Game
 
-
+    def initialize
+      @won = false
+    end
 
 
   
@@ -10,9 +12,11 @@ module Mastermind
         guess_max = 9
 
         if current_guess_number == guess_max
+          won(false)
           end_of_game = true
         else
             if response == ["Black", "Black", "Black", "Black"]
+              won(true)
               end_of_game = true
             else
               end_of_game = false
@@ -21,10 +25,12 @@ module Mastermind
         end_of_game
     end
 
+    def won(boolean)
+      @won = boolean
+    end
 
-
-    def won?(won)
-      won
+    def won?
+      return @won
     end
 
 

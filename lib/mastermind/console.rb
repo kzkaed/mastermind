@@ -28,14 +28,12 @@ class Console
     end
 
     def play(game)
-
         out (WELCOME)
         out (SECRET_CODE_GEN)
         out (DIRECTIONS)
         out_secret_code(@code_maker.secret_code)
 
         until game.end_of_game?(@current_guess_number, @response) do
-
             out_current_guess_number(@current_guess_number)
             in_guess_from_user_with_validation
             out_secret_code(@code_maker.secret_code) #testing#
@@ -43,9 +41,12 @@ class Console
             @response = @code_maker.determine_and_place_response(@code_maker.guess)
             out_response(@code_maker.response)
             @current_guess_number += 1
-           
         end
+        boolean = game.won?
+        out_won_or_lost_message(boolean)
     end
+
+   
 
     def out_won_or_lost_message(boolean)
         if boolean
