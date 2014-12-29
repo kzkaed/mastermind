@@ -144,6 +144,14 @@ describe Mastermind::Console do
 
   end
 
+  it 'puts message to out you won' do
+    console.out_won_or_lost_message(true)
+    expect($stdout.string).to match("YOU WON")
+  end
 
+  it 'puts message to out you lost' do
+    console.out_won_or_lost_message(false)
+    expect($stdout.string).to match("YOU LOST")
+  end
 
 end

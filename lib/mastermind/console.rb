@@ -53,6 +53,7 @@ class Console
         else
             message = "YOU LOST"
         end
+        out(message)
         message
     end
 
