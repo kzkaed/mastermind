@@ -26,7 +26,6 @@ describe Mastermind::MockIO do
   it 'inputs 2 messages' do
     mock_io.inputs = ['hello','world']
 
-
     expect(mock_io.in).to eq('hello')
     expect(mock_io.in).to eq('world')
   end

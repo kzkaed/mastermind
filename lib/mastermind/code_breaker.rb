@@ -4,12 +4,8 @@ module Mastermind
   end
 
 
-class CodeBreaker
-
-
-
-
-end
+  class CodeBreaker
+  end
 
 
 end

@@ -117,7 +117,6 @@ describe Mastermind::Console do
   it 'message checks for message' do
     expect(console.check_and_guess_again?('')).to eq(false)
     expect(console.check_and_guess_again?('Incorrect Color')).to eq(true)
-
   end
 
   it 'guess again by decrement current_guess' do
@@ -126,10 +125,8 @@ describe Mastermind::Console do
     expect(console.current_guess_number).to eq(1)
   end
 
-
   it 'puts you won or you lost message' do
     expect(console.out_won_or_lost_message(true)).to eq("YOU WON")
-
   end
 
   it 'puts message to out you won' do

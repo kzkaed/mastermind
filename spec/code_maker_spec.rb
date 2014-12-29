@@ -10,15 +10,12 @@ describe Mastermind::CodeMaker do
   it 'place secret code pegs' do
     code_maker.place_code(["Red", "Red", "Red", "Red"])
     expect(code_maker.secret_code).to match_array(["Red", "Red", "Red", "Red"])
-
   end
-
 
   it 'makes sure the secret code parameter is 4' do
     expect {code_maker.place_code(["Red", "Red", "Red", "Red", "Red"])}.to raise_error(Mastermind::InvalidCode, "Too many pegs")
     expect {code_maker.place_code(["Red","Red","Red"])}.to raise_error(Mastermind::InvalidCode,"Not enough pegs")
   end
-
 
   it 'random number should be between 0 and 5' do
     code_maker.generate_random_code
@@ -28,20 +25,16 @@ describe Mastermind::CodeMaker do
     expect(code_maker.random_nums[3]).to be_between(0, 5)
   end
 
-
   it 'secret code should be colors from COLORS' do
     code_maker.random_nums = [1, 2, 3, 4]
     code_maker.place_generated_code
     expect(code_maker.secret_code).to include "Yellow", "Black", "White", "Blue"
   end
 
-
-
   it 'all guesses are processed in capitalize format' do
     code_maker.validate_and_place_guess(["red","RED","reD", "Red"])
     expect(code_maker.guess).to match_array(["Red","Red","Red","Red"])
   end
-
 
   it 'returns message if guess is not a correct color in validate_guess' do
     code_maker.validate_and_place_guess(["Cyan","Red","Red" "Red"])
@@ -51,13 +44,11 @@ describe Mastermind::CodeMaker do
   it 'sets guess to empty if guess is not correct color in validate_guess' do
     code_maker.validate_and_place_guess(["Cyan","Red","Red" "Red"])
     expect(code_maker.guess).to eq([])
-
   end
 
   it 'place code secret code should match @secret_code' do
     expect(code_maker.place_code(["Red","Blue","Yellow","Yellow"])).to eq(code_maker.secret_code)
   end
-
 
   it 'guess is all one color and code is random' do
     code_maker.secret_code = ["Red","Blue","Yellow","Yellow"]
@@ -77,7 +68,6 @@ describe Mastermind::CodeMaker do
   it 'guesses 1 match with yellow and index offset' do
     code_maker.secret_code = ["Yellow", "Blue", "Yellow", "Yellow"]
     expect(code_maker.determine_and_place_response(["Yellow","Yellow","Blue","Blue"])).to match_array(["Black","White","White",""])
-
   end
 
   it 'guesses 4 match with red' do
@@ -102,7 +92,6 @@ describe Mastermind::CodeMaker do
     expect(code_maker.determine_and_place_response(["White","White","White","Black"])).to match_array(["Black","Black", "", "Black"])
 
   end
-
 
   it 'if duplicate colors in guess, cannot be awarded key peg in different order' do
     code_maker.secret_code = ["Yellow","Black","Black","Yellow"]

@@ -19,7 +19,6 @@ describe Mastermind::Game do
     expect(game.won(true)).to eq(true)
   end
  
-
   it 'set won to false if lost game' do
     expect(game.won(false)).to eq(false)
   end
@@ -27,13 +26,11 @@ describe Mastermind::Game do
   it 'won? return true if won game' do
     game.won(true)
     expect(game.won?).to eq(true)
-
   end
 
   it 'won? return false if lost game' do
     game.won(true)
     expect(game.won?).to eq(true)
-
   end
 
   it 'has @won instance variable initialized to nil' do

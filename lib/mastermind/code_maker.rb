@@ -11,9 +11,6 @@ module Mastermind
     attr_accessor :guess
     attr_accessor :message
 
-
-
-
     COLORS = ["Red", "Yellow", "Black", "White", "Blue", "Green"]
     GUESS_MATCH = "guess_match"
     CODE_MATCH = "code_match"
@@ -48,7 +45,6 @@ module Mastermind
         @message = message
         return message
       end
-
       @guess = process_guess
     end
 
