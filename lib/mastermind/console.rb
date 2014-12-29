@@ -1,4 +1,5 @@
 require_relative "code_maker"
+require_relative "color"
 
 module Mastermind
 
@@ -8,7 +9,7 @@ class Console
     attr_accessor :current_guess_number
     attr_reader :response
     attr_reader :code_maker
-
+    attr_accessor :color
 
     WELCOME = "Welcome to Mastermind"
     SECRET_CODE_GEN = "Secret Code has been Generated"
@@ -22,10 +23,13 @@ class Console
         @code_maker = code_maker
         @current_guess_number = 1
         @response = []
+
+        @color = Mastermind::Color.new
+
     end
 
     def play(game)
-        out (WELCOME)
+        out (color.magenta(WELCOME))
         out (SECRET_CODE_GEN)
         out (DIRECTIONS)
         out_secret_code(@code_maker.secret_code)
@@ -39,20 +43,15 @@ class Console
             out_response(@code_maker.response)
             @current_guess_number += 1
         end
-        boolean = game.won?
-        out_won_or_lost_message(boolean)
+        out out_won_or_lost_message(game.won?)
     end
 
-   
-
-    def out_won_or_lost_message(boolean)
-        if boolean
-            message ="YOU WON"
+    def out_won_or_lost_message(game)
+        if game
+            "YOU WON"
         else
-            message = "YOU LOST"
+            "YOU LOST"
         end
-        out(message)
-        message
     end
 
     def out (message)
@@ -72,9 +71,8 @@ class Console
     end
 
     def put_prompt(guess_num)
-        puts "Enter color #{guess_num}"
+        out "Enter color #{guess_num}"
     end
-
 
     def in_guess_from_user_with_validation
         guess = []

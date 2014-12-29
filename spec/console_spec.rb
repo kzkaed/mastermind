@@ -1,12 +1,14 @@
 require 'spec_helper'
 require 'mastermind/console'
 require 'mastermind/user_io'
+require 'mastermind/color'
 require 'stringio'
 
 describe Mastermind::Console do
 
 
   let(:console) { described_class.new }
+  let(:color) { described_class.new }
 
   before do
     $stdout = StringIO.new
@@ -129,17 +131,13 @@ describe Mastermind::Console do
 
   it 'puts you won or you lost message' do
     expect(console.out_won_or_lost_message(true)).to eq("YOU WON")
-
-  end
-
-  it 'puts message to out you won' do
-    console.out_won_or_lost_message(true)
-    expect($stdout.string).to match("YOU WON")
   end
 
   it 'puts message to out you lost' do
-    console.out_won_or_lost_message(false)
-    expect($stdout.string).to match("YOU LOST")
+    expect(console.out_won_or_lost_message(false)).to eq("YOU LOST")
   end
+
+
+
 
 end

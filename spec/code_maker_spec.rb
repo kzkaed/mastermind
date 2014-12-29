@@ -36,6 +36,12 @@ describe Mastermind::CodeMaker do
   end
 
 
+  it 'secret code should be colors from COLORS' do
+    code_maker.random_nums = [0, 2, 3, 4]
+    code_maker.place_generated_code
+    expect(code_maker.secret_code).to include "Red", "Black", "White", "Blue"
+  end
+
 
   it 'all guesses are processed in capitalize format' do
     code_maker.validate_and_place_guess(["red","RED","reD", "Red"])

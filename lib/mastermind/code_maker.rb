@@ -13,7 +13,7 @@ module Mastermind
 
 
 
-
+    #"\033[31m#{string_to_color}\033[0m"
     COLORS = ["Red", "Yellow", "Black", "White", "Blue", "Green"]
     GUESS_MATCH = "guess_match"
     CODE_MATCH = "code_match"
