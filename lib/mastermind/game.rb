@@ -1,7 +1,7 @@
 module Mastermind
 
   class Game
-    @won
+    attr_reader :won
 
     def initialize
       @won = false

@@ -29,9 +29,9 @@ class Console
     end
 
     def play(game)
-        out (color.magenta(WELCOME))
-        out (SECRET_CODE_GEN)
-        out (DIRECTIONS)
+        out(color.magenta(WELCOME))
+        out(SECRET_CODE_GEN)
+        out(DIRECTIONS)
         out_secret_code(@code_maker.secret_code)
 
         until game.end_of_game?(@current_guess_number, @response) do
@@ -55,7 +55,7 @@ class Console
     end
 
     def out (message)
-        puts (message)
+        puts(message)
     end
 
     def in

@@ -27,20 +27,20 @@ module Mastermind
       @random_nums.each_index do |i|
         secret_code[i] = COLORS[@random_nums[i]]
       end
-      check_pegs_size (secret_code)
-      check_colors_are_correct (secret_code)
+      check_pegs_size(secret_code)
+      check_colors_are_correct(secret_code)
       @secret_code = secret_code
     end
 
     def place_code (secret_code)  
-      check_pegs_size (secret_code)
-      check_colors_are_correct (secret_code)
+      check_pegs_size(secret_code)
+      check_colors_are_correct(secret_code)
       @secret_code = secret_code
     end
 
     def validate_and_place_guess(guess_array)
       process_guess = []
-      process_guess = format_guess (guess_array)
+      process_guess = format_guess(guess_array)
 
       message = check_colors_are_correct(process_guess)
       if message != nil
