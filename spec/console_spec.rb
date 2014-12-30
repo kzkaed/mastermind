@@ -116,11 +116,7 @@ describe Mastermind::Console do
     expect(console.receive_user_input([], 3)).to eq([nil,nil,nil,"Blue"])
   end
 
-  it 'message checks for message' do
-    expect(console.check_and_guess_again?('')).to eq(false)
-    expect(console.check_and_guess_again?('Incorrect Color')).to eq(true)
 
-  end
 
   it 'guess again by decrement current_guess' do
     console.current_guess_number = 2
@@ -137,7 +133,10 @@ describe Mastermind::Console do
     expect(console.out_won_or_lost_message(false)).to eq("YOU LOST")
   end
 
-
+it 'checks for incorrect color message' do
+  expect(console.incorrect_color_message?('')).to eq(false)
+  expect(console.incorrect_color_message?('Incorrect Color')).to eq(true)
+end
 
 
 end

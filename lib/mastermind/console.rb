@@ -25,7 +25,6 @@ class Console
         @response = []
 
         @color = Mastermind::Color.new
-
     end
 
     def play(game)
@@ -35,15 +34,22 @@ class Console
         out_secret_code(@code_maker.secret_code)
 
         until game.end_of_game?(@current_guess_number, @response) do
-            out_current_guess_number(@current_guess_number)
-            in_guess_from_user_with_validation
-            out_secret_code(@code_maker.secret_code) #testing#
-            out_guess(@code_maker.guess)
-            @response = @code_maker.determine_and_place_response(@code_maker.guess)
-            out_response(@code_maker.response)
-            @current_guess_number += 1
+          take_turn
         end
+        
         out out_won_or_lost_message(game.won?)
+    end
+    
+    def take_turn
+      out_current_guess_number(@current_guess_number)
+      in_guess_from_user_with_validation
+      out_secret_code(@code_maker.secret_code) #testing#
+      out_guess(@code_maker.guess)
+      
+      @response = @code_maker.determine_and_place_response(@code_maker.guess)
+      out_response(@code_maker.response)
+      
+      @current_guess_number += 1
     end
 
     def out_won_or_lost_message(game)
@@ -81,13 +87,13 @@ class Console
             guess = receive_user_input(guess, enter_color - 1)
         end
         message = @code_maker.validate_and_place_guess(guess)
-        check_and_guess_again?(message)
+        guess_again if incorrect_color_message?(message)
     end
 
-    def check_and_guess_again?(message)
-        if message == 'Incorrect Color'
-            out (INCORRECT_COLOR_MESSAGE)
-            guess_again
+    
+    def incorrect_color_message?(message)
+      if message == 'Incorrect Color'
+            out(color.red(INCORRECT_COLOR_MESSAGE))
             return true
         end
       false
