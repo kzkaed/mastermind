@@ -1,13 +1,10 @@
-require_relative "../lib/mastermind/game"
-require_relative "../lib/mastermind/console"
+$: << File.expand_path(File.dirname(__FILE__) + "/../lib")
 
+require 'mastermind/console'
+require 'mastermind/game'
+require 'mastermind/runner'
 
-puts "Hello, I'm starting the game..."
 game = Mastermind::Game.new
-console = Mastermind::Console.new
-console.play(game)
+user_interface = Mastermind::Console.new
 
-
-
-
-
+Mastermind::Runner.new(user_interface, game).run

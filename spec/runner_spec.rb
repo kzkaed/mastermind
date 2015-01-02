@@ -1,75 +1,83 @@
 require 'spec_helper'
 require 'mastermind/runner'
-
-class MockUserInterface
-  
-  def initialize
-    @prepare_called = false
-  end
-  
-  def prepare
-    @prepare_called = true
-  end
-  
-  def prepare_called?
-    return @prepare_called
-  end
-  
-end
-
-class MockGame
-  def initialize
-    @end_of_game_called = false
-  end
-  
-  def end_of_game?(current_turn, response)
-    @end_of_game_called = true
-   end
-   
-   def end_of_game_called?
-     return @end_of_game_called
-   end
-end
+require 'mocks/mock_user_interface'
+require 'mocks/mock_game'
 
 describe Mastermind::Runner do
   
-let(:runner_nil) {described_class.new(nil,nil)}
-=begin
+  let!(:game) { MockGame.new}
+  let!(:user_interface) {MockUserInterface.new}
+  let(:runner) {described_class.new(user_interface, game)}
+
   it "creates the game" do
-    #runner = described_class.new(nil)
-    expect(runner_nil.game).not_to eq(nil)
+    expect(runner.game).to eq(game)
   end
-=end
+  
+  it "generates the secret code" do
+    runner.run
+    expect(game.generate_code_called?).to eq(true)
+  end
+
   it "current guess starts as 0" do
-    #runner = described_class.new(nil)
-    expect(runner_nil.current_turn).to eql(0)
+    expect(runner.current_turn).to eql(0)
   end
   
   it 'response start as empty array' do
-    #runner = described_class.new(nil)
-    expect(runner_nil.response).to eq([])
+    expect(runner.response).to eq([])
   end
   
   it "prints out game startup messages" do
-    user_interface = MockUserInterface.new
-    game = MockGame.new
-    runner = described_class.new(user_interface,game)
-    
     runner.run
     
     expect(user_interface.prepare_called?).to eq(true)
   end
   
-  it 'plays game if not end of game' do
-    user_interface = MockUserInterface.new
-    game = MockGame.new
-    runner = described_class.new(user_interface, game)
+  it 'user interface display turn if not end of game' do
+    game.number_of_turns = 1
     
     runner.run
     
-    expect(game.end_of_game?(0, [])).to eq(true)
-    
+    expect(user_interface.display_current_turn_called?).to eq(true)    
   end
+  
+  it "user interface displays response" do
+    game.number_of_turns = 1
+    response = ["Black", "Black", "Black", "Black"]
+    game.responses << response
+    guess = ["Red", "Red", "Red", "Red"]
+    user_interface.guesses << guess
+    runner.run
+    
+    expect(user_interface.display_response_called?).to eq(true)
+    expect(user_interface.response).to eq(response)
+    expect(user_interface.guess).to eq(guess)
+  end
+  
+  it "user interface displays game won" do
+    game.number_of_turns = 1
+    game.won = false
+    runner.run
+    
+    expect(user_interface.display_game_result_called?).to eq(true)
+    expect(user_interface.result).to eq(false)
+  end
+  
+  it "sends guess to game" do
+    game.number_of_turns = 1
+    guess = ["Red", "Red", "Red", "Red"]
+    user_interface.guesses << guess
+    
+    runner.run
+
+    expect(user_interface.in_guess_from_user_with_validation_called?).to eq(true)
+    expect(game.take_turn_called?).to eq(true)
+    expect(game.current_guess).to eq(guess)
+  end
+
+
+
+  
+  
   
   
 end

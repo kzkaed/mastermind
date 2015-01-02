@@ -15,10 +15,18 @@ module Mastermind
     
     def run
       @user_interface.prepare
+      @game.generate_code
       
-      until game.end_of_game?(@current_turn, @response) do
-        # take_turn
+      until @game.end_of_game?(@current_turn, @response) do
+        @user_interface.display_current_turn(@game.current_turn)
+        guess = @user_interface.in_guess_from_user_with_validation(@game)
+        @response = @game.take_turn(guess)
+        @user_interface.display_response(guess, response)
+        @current_turn = @game.current_turn
+
       end
+      
+      @user_interface.display_game_result(@game.won?(response))
 
     end
     
