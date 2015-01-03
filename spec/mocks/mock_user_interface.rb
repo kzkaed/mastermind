@@ -1,5 +1,5 @@
 class MockUserInterface
-  attr_reader :guesses, :response, :result, :guess
+  attr_reader :guesses, :response, :result, :guess ,:secret_code
   
   def initialize
     @prepare_called = false
@@ -29,9 +29,11 @@ class MockUserInterface
      @guesses.pop
    end
    
-   def display_game_result(result)
+   def display_game_result(result,secret_code)
      @display_game_result_called = true
      @result = result
+     @secret_code = secret_code
+
    end
 
   def out (messages)

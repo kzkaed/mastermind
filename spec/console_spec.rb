@@ -107,15 +107,23 @@ describe Mastermind::Console do
 
 
 it 'displays game result' do
-  console.display_game_result(true)
+  console.display_game_result(true,["Red","Yellow", "Blue", "Green"])
   expect($stdout.string).to match("YOU WON")
 end
+
+
 
 it 'receives guess input' do
   $stdin.string = "Blue"
   expect(console.in_guess).to eq(["Blue",nil, nil, nil])
 end
 
+  it 'displays secret code with game result' do
+    secret_code = ["Red", "Red", "Red", "Red"]
+    console.out_secret_code(secret_code)
+    expect($stdout.string).to eq("The secret code [\"Red\", \"Red\", \"Red\", \"Red\"]\n")
+
+  end
 
 
 end

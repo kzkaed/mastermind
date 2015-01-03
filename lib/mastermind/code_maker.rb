@@ -14,7 +14,7 @@ module Mastermind
 
     #"\033[31m#{string_to_color}\033[0m"
 
-    COLORS = ["Red", "Yellow", "Black", "White", "Blue", "Green"]
+    COLORS = %w[Red Yellow Black White Blue Green]
     GUESS_MATCH = "guess_match"
     CODE_MATCH = "code_match"
     INCORRECT_COLOR = "incorrect_color"

@@ -26,7 +26,7 @@ module Mastermind
 
       end
       
-      @user_interface.display_game_result(@game.won?(response))
+      @user_interface.display_game_result(@game.won?(response), @game.secret_code)
 
     end
     

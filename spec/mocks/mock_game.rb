@@ -1,6 +1,7 @@
 class MockGame
   attr_accessor :number_of_turns, :current_guess, :responses, :won, :current_turn
-  
+  attr_reader :secret_code
+
   def initialize
     @won = true
     @end_of_game_called = false
@@ -18,7 +19,8 @@ class MockGame
   
   
     def generate_code
-      @generated_code_called = true
+      @secret_code = ["Red","Yellow","Blue","Green"]
+      return @generated_code_called = true
     end
     
    

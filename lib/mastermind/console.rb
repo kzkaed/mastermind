@@ -1,5 +1,5 @@
-require_relative "code_maker"
-require_relative "color"
+require_relative 'code_maker'
+require_relative 'color'
 
 module Mastermind
   class InvalidCode < Exception
@@ -10,11 +10,11 @@ class Console
     attr_accessor :color
     attr_reader :game
 
-    WELCOME = "Welcome to Mastermind"
-    SECRET_CODE_GEN = "Secret Code has been Generated"
-    DIRECTIONS = "Guess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win."
-    INCORRECT_COLOR_MESSAGE = "Incorrect colors, guess again using |Red Yellow Blue Green Black White|"
-    INCORRECT_COLOR = "incorrect_color"
+    WELCOME = 'Welcome to Mastermind'
+    SECRET_CODE_GEN = 'Secret Code has been Generated'
+    DIRECTIONS = 'Guess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win.'
+    INCORRECT_COLOR_MESSAGE = 'Incorrect colors, guess again using |Red Yellow Blue Green Black White|'
+    INCORRECT_COLOR = 'incorrect_color'
     def initialize
         
         @color = Mastermind::Color.new
@@ -30,7 +30,9 @@ class Console
       out_guess(guess)
       out_response(response)
     end
-    
+
+
+
     def display_current_turn(guess_number)
       out_current_guess_number(guess_number)
     end
@@ -55,13 +57,15 @@ class Console
       false
     end
 
-    def display_game_result(result)
+    def display_game_result(result,secret_code)
       if result == true
         out("YOU WON")
       else
         out("YOU LOST")
+        out_secret_code(secret_code)
       end
     end
+
 
     def out (message)
       puts(message)
@@ -90,6 +94,10 @@ class Console
 
     def out_response(response)
       out "The response is #{response}"
+    end
+
+    def out_secret_code(secret_code)
+      out "The secret code #{secret_code}"
     end
 
     def in

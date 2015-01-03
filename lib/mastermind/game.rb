@@ -2,7 +2,7 @@ module Mastermind
 
   class Game
     TURN_MAX = 9
-    attr_reader :won, :code_maker
+    attr_reader :won, :code_maker, :secret_code
     attr_accessor :current_turn
 
     def initialize
@@ -11,7 +11,7 @@ module Mastermind
     end
     
     def generate_code
-      return @code_maker.place_generated_code
+      @secret_code = @code_maker.place_generated_code
     end
     
     def take_turn(guess)
