@@ -1,37 +1,46 @@
 module Mastermind
 
   class Game
-    @won
+    TURN_MAX = 9
+    attr_reader :won, :code_maker
+    attr_accessor :current_turn
 
     def initialize
-      @won = false
+      @code_maker = Mastermind::CodeMaker.new
+      @current_turn = 1
+    end
+    
+    def generate_code
+      return @code_maker.place_generated_code
+    end
+    
+    def take_turn(guess)
+      @current_turn = @current_turn + 1
+
+      @code_maker.determine_response(guess)#response
+   end
+    
+    def validate(guess)
+      @code_maker.validate(guess)#guess_processed
+    end
+    
+    def end_of_game?(current_turn, response)
+      no_more_turns?(current_turn) || won?(response)
+    end
+    
+    def won?(response)
+      response == ["Black", "Black", "Black", "Black"]
     end
 
-    def end_of_game?(current_guess_number, response)
-        guess_max = 9
+    
+    
+private
 
-        if current_guess_number == guess_max
-          won(false)
-          end_of_game = true
-        else
-            if response == ["Black", "Black", "Black", "Black"]
-              won(true)
-              end_of_game = true
-            else
-              end_of_game = false
-            end
-        end
-        end_of_game
+    def no_more_turns?(current_turn)
+      current_turn == TURN_MAX
     end
+    
 
-    def won(boolean)
-      @won = boolean
-    end
-
-    def won?
-      return @won
-    end
-
-
+  
   end
 end

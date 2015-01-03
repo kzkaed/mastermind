@@ -1,12 +1,14 @@
 require 'spec_helper'
 require 'mastermind/console'
 require 'mastermind/user_io'
+require 'mastermind/color'
 require 'stringio'
 
 describe Mastermind::Console do
 
 
   let(:console) { described_class.new }
+  let(:color) { described_class.new }
 
   before do
     $stdout = StringIO.new
@@ -17,19 +19,12 @@ describe Mastermind::Console do
     $stdin = STDIN
   end
 
-  it '@code_maker is initialized' do
-    expect(console.code_maker).not_to be_nil
+  it 'prints out game staring messages' do
+    expect(console.prepare).to eq(nil)
   end
 
-  it '@current_guess is  1 at initialization' do
-    expect(console.current_guess_number).to eq(1)
-  end
 
-  it '@response is initialized to an empty array' do
-    expect(console.response).to eq([])
-  end
-
-  it 'uses console out to put a message to the console' do
+  it 'uses out to put a message to the console' do
     console.out('a message')
     expect($stdout.string).to match('a message')
   end
@@ -41,45 +36,63 @@ describe Mastermind::Console do
 
   it 'defines constants for primary console messages' do
     expect(Mastermind::Console::WELCOME).to eq("Welcome to Mastermind")
-  end
-
-  it 'uses constants to pass to out' do
-    console.out(Mastermind::Console::WELCOME)
-    expect($stdout.string).to eq("Welcome to Mastermind\n")
-  end
-
-  it 'also defines other constants for console messages' do
     expect(Mastermind::Console::SECRET_CODE_GEN).to eq('Secret Code has been Generated')
     expect(Mastermind::Console::INCORRECT_COLOR_MESSAGE).to eq("Incorrect colors, guess again using |Red Yellow Blue Green Black White|")
     expect(Mastermind::Console::DIRECTIONS).to eq("Guess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win.")
+    expect(Mastermind::Console::INCORRECT_COLOR).to eq("incorrect_color")
   end
 
-  it 'puts to console any code' do
-    console.out_secret_code('a code')
-    expect($stdout.string).to match('a code')
+  it 'puts to console WELCOME using out' do
+    message = Mastermind::Console::WELCOME
+    console.out(message)
+    expect($stdout.string).to eq(message+"\n")
   end
 
-  it 'puts secret code from code_maker to console' do
-    code = console.code_maker.secret_code
-    console.out_secret_code(code)
-    expect($stdout.string).to eq("#{code}\n")
+  it 'puts to console SECRET_CODE_GEN using out' do
+    message = Mastermind::Console::SECRET_CODE_GEN
+    console.out(message)
+    expect($stdout.string).to eq(message+"\n")
   end
 
+   it 'puts to console INCORRECT_COLOR_MESSAGE using out' do
+    message = Mastermind::Console::INCORRECT_COLOR_MESSAGE
+    console.out(message)
+    expect($stdout.string).to eq(message+"\n")
+   end
+
+    it 'puts to console DIRECTIONS using out' do
+    message = Mastermind::Console::DIRECTIONS
+    console.out(message)
+    expect($stdout.string).to eq(message+"\n")
+  end
+  
+  it 'checks for INCORRECT_COLOR message' do
+   guess = ["Red","Red","Red","Red"]
+   expect(console.incorrect_color_message?(guess)).to eq(false)
+   expect(console.incorrect_color_message?(Mastermind::Console::INCORRECT_COLOR)).to eq(true)
+ end
+
+  it 'puts to out INCORRECT_COLOR_MESSAGE' do
+    console.incorrect_color_message?('Incorrect Color')
+    expect($stdout.string).to match(Mastermind::Console::INCORRECT_COLOR_MESSAGE)
+  end
+  
+  it 'prepares startup messages' do
+    string_to_color = "Welcome to Mastermind"
+    string = "\33[35m#{string_to_color}\033[0m"
+    stringprint = string + "\nSecret Code has been Generated"+"\nGuess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win.\n"
+    console.prepare
+    expect($stdout.string).to eq(stringprint)
+  end
+  
   it 'lets the user know what the current guess number is' do
-    current_guess_number = console.current_guess_number
-    console.out_current_guess_number(current_guess_number)
-    expect($stdout.string).to eq("Guess number #{current_guess_number}\n")
+    console.display_current_turn(4)
+    expect($stdout.string).to eq("Guess number 4\n")
   end
 
   it 'puts to console guess from code_maker' do
-    guess = console.code_maker.guess
-    console.out_guess(guess)
-    expect($stdout.string).to eq("Your guess is #{guess}\n")
-  end
-
-  it 'guess is code_maker guess' do
-    guess = console.code_maker.guess
-    expect(console.code_maker.guess).to eq(guess)
+    console.out_guess(["Red", "Red", "Red", "Red"])
+    expect($stdout.string).to eq("Your guess is [\"Red\", \"Red\", \"Red\", \"Red\"]\n")
   end
 
   it 'puts user prompt message: Enter color 1' do
@@ -92,51 +105,17 @@ describe Mastermind::Console do
     expect($stdout.string).to match("Enter color 4")
   end
 
-  it 'console receives input and places in guess at index ' do
-      $stdin.string = "Blue"
-      expect(console.receive_user_input(["Red","Red","Red","Red"], 0)).to eq(["Blue","Red","Red","Red"])
-      $stdin.string = "Blue"
-      expect(console.receive_user_input(["Red","Red","Red","Red"], 1)).to eq(["Red","Blue","Red","Red"])
-      $stdin.string = "Blue"
-      expect(console.receive_user_input(["Red","Red","Red","Red"], 2)).to eq(["Red","Red","Blue","Red"])
-      $stdin.string = "Blue"
-      expect(console.receive_user_input(["Red","Red","Red","Red"], 3)).to eq(["Red","Red","Red","Blue"])
-  end
 
-  it 'receives input and places in guess at index with empty guess array fill with nil' do
-    $stdin.string = "Blue"
-    expect(console.receive_user_input([], 0)).to eq(["Blue"])
-    $stdin.string = "Blue"
-    expect(console.receive_user_input([], 1)).to eq([nil,"Blue"])
-    $stdin.string = "Blue"
-    expect(console.receive_user_input([], 2)).to eq([nil,nil,"Blue"])
-    $stdin.string = "Blue"
-    expect(console.receive_user_input([], 3)).to eq([nil,nil,nil,"Blue"])
-  end
+it 'displays game result' do
+  console.display_game_result(true)
+  expect($stdout.string).to match("YOU WON")
+end
 
-  it 'message checks for message' do
-    expect(console.check_and_guess_again?('')).to eq(false)
-    expect(console.check_and_guess_again?('Incorrect Color')).to eq(true)
-  end
+it 'receives guess input' do
+  $stdin.string = "Blue"
+  expect(console.in_guess).to eq(["Blue",nil, nil, nil])
+end
 
-  it 'guess again by decrement current_guess' do
-    console.current_guess_number = 2
-    console.guess_again
-    expect(console.current_guess_number).to eq(1)
-  end
 
-  it 'puts you won or you lost message' do
-    expect(console.out_won_or_lost_message(true)).to eq("YOU WON")
-  end
-
-  it 'puts message to out you won' do
-    console.out_won_or_lost_message(true)
-    expect($stdout.string).to match("YOU WON")
-  end
-
-  it 'puts message to out you lost' do
-    console.out_won_or_lost_message(false)
-    expect($stdout.string).to match("YOU LOST")
-  end
 
 end

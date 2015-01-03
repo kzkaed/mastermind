@@ -1,120 +1,110 @@
 require_relative "code_maker"
+require_relative "color"
 
 module Mastermind
-
-
+  class InvalidCode < Exception
+  end
 class Console
     
-    attr_accessor :current_guess_number
-    attr_reader :response
-    attr_reader :code_maker
-
+    
+    attr_accessor :color
+    attr_reader :game
 
     WELCOME = "Welcome to Mastermind"
     SECRET_CODE_GEN = "Secret Code has been Generated"
     DIRECTIONS = "Guess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win."
     INCORRECT_COLOR_MESSAGE = "Incorrect colors, guess again using |Red Yellow Blue Green Black White|"
-
+    INCORRECT_COLOR = "incorrect_color"
     def initialize
-        code_maker = Mastermind::CodeMaker.new
-        code_maker.generate_random_code
-        code_maker.place_generated_code
-        @code_maker = code_maker
-        @current_guess_number = 1
-        @response = []
+        
+        @color = Mastermind::Color.new
+    end
+    
+    def prepare
+      out(color.magenta(WELCOME))
+      out(SECRET_CODE_GEN)
+      out(DIRECTIONS)
     end
 
-    def play(game)
-        out (WELCOME)
-        out (SECRET_CODE_GEN)
-        out (DIRECTIONS)
-        out_secret_code(@code_maker.secret_code)
+    def display_response(guess, response)
+      out_guess(guess)
+      out_response(response)
+    end
+    
+    def display_current_turn(guess_number)
+      out_current_guess_number(guess_number)
+    end
 
-        until game.end_of_game?(@current_guess_number, @response) do
-            out_current_guess_number(@current_guess_number)
-            in_guess_from_user_with_validation
-            out_secret_code(@code_maker.secret_code) #testing#
-            out_guess(@code_maker.guess)
-            @response = @code_maker.determine_and_place_response(@code_maker.guess)
-            out_response(@code_maker.response)
-            @current_guess_number += 1
+# this should partly be in game
+# how to fully test this - use a stub or mock
+    def in_guess_from_user_with_validation(game)
+      guess = ["","","",""]
+      while (guess == ["","","",""])
+        guess = in_guess
+        guess = game.validate(guess)
+        if incorrect_color_message?(guess)
+          out(color.red(INCORRECT_COLOR_MESSAGE))
+          guess = ["","","",""]
         end
-        boolean = game.won?
-        out_won_or_lost_message(boolean)
+      end
+      guess
     end
 
-   
-
-    def out_won_or_lost_message(boolean)
-        if boolean
-            message ="YOU WON"
-        else
-            message = "YOU LOST"
-        end
-        out(message)
-        message
-    end
-
-    def out (message)
-        puts (message)
-    end
-
-    def in
-       gets.chomp
-    end
-
-    def out_secret_code(secret_code)
-        out "#{secret_code}"
-    end
-
-    def out_current_guess_number(current_guess_number)
-        out "Guess number #{current_guess_number}"
-    end
-
-    def put_prompt(guess_num)
-        puts "Enter color #{guess_num}"
-    end
-
-
-    def in_guess_from_user_with_validation
-        guess = []
-        (1..4).each do |enter_color |
-            put_prompt(enter_color)
-            guess = receive_user_input(guess, enter_color - 1)
-        end
-        message = @code_maker.validate_and_place_guess(guess)
-        check_and_guess_again?(message)
-    end
-
-    def check_and_guess_again?(message)
-        if message == 'Incorrect Color'
-            out (INCORRECT_COLOR_MESSAGE)
-            guess_again
-            return true
-        end
+    def incorrect_color_message?(guess)#private?
+      return true if guess == INCORRECT_COLOR
       false
     end
 
-
-    def guess_again
-        @current_guess_number -= 1
+    def display_game_result(result)
+      if result == true
+        out("YOU WON")
+      else
+        out("YOU LOST")
+      end
     end
 
-    def receive_user_input(guess, index)
-       guess[index] = gets.chomp
-       guess
+    def out (message)
+      puts(message)
+    end
+
+    def in_guess#private?
+      guess = []
+      (1..4).each do |prompt_num|
+        put_prompt(prompt_num)
+        guess << gets
+      end
+      guess
+    end
+
+    def put_prompt(guess_num)#private?
+      out "Enter color #{guess_num}"
+    end
+
+    def out_current_guess_number(current_guess_number)
+      out "Guess number #{current_guess_number}"
     end
 
     def out_guess(guess)
-        out "Your guess is #{guess}"
+      out "Your guess is #{guess}"
     end
 
     def out_response(response)
-        out "The response is #{response}"
+      out "The response is #{response}"
     end
 
-end
+    def in
+      gets.chomp
+    end
 
+
+    private
+
+
+
+
+
+
+end
 
 end
 

@@ -1,6 +1,7 @@
 
 require 'spec_helper'
 require 'mastermind/game'
+require 'mastermind/code_maker'
 
 describe Mastermind::Game do
 
@@ -15,38 +16,40 @@ describe Mastermind::Game do
     expect(game.end_of_game?(9, ["","","",""])).to eq(true)
   end
 
-  it 'set won to true if won game' do
-    expect(game.won(true)).to eq(true)
-  end
- 
-  it 'set won to false if lost game' do
-    expect(game.won(false)).to eq(false)
-  end
-
   it 'won? return true if won game' do
-    game.won(true)
-    expect(game.won?).to eq(true)
-  end
-
-  it 'won? return false if lost game' do
-    game.won(true)
-    expect(game.won?).to eq(true)
-  end
-
-  it 'has @won instance variable initialized to nil' do
-    expect(game.won?).to eq(false)
-  end
-
-  it 'end_of_game won will set won to true' do
-    game.end_of_game?( 1 , ["Black","Black","Black","Black"])
-    expect(game.won?).to eq(true)
+    expect(game.won?(["Black", "Black", "Black", "Black"])).to eq(true)
   end
 
   it 'end_of_game lost will set won to false' do
-    game.end_of_game?(9, ["","","",""])
-    expect(game.won?).to eq(false)
+    expect(game.won?(["","","",""])).to eq(false)
+  end
+  
+  it "generates the secret code" do
+    game.generate_code
+    expect(game.code_maker.secret_code).not_to eq(nil)
+  end
+  
+  it 'validates guess' do
+    expect(game.validate(["red","red","Red","Red"])).to eq(["Red","Red","Red","Red"])
+  end
+  
+  it "takes turn" do  
+    secret_code = game.generate_code.dup 
+
+    expect(game.take_turn(secret_code)).to eq(["Black", "Black", "Black", "Black"])
+  end
+  
+  it 'current_turn starts at 1' do
+    expect(game.current_turn).to eq(1)
   end
 
+  it 'increments current_turn by 1 when takes turn' do
+     game.current_turn = 2
+     guess = game.generate_code.dup 
+     game.take_turn(guess)
+     expect(game.current_turn).to eq(3)
+  end
+ 
 
-
+ 
 end
