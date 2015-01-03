@@ -1,14 +1,15 @@
 require 'spec_helper'
 require 'mastermind/console'
 require 'mastermind/user_io'
-require 'mastermind/color'
+require 'mastermind/color_string'
 require 'stringio'
 
 describe Mastermind::Console do
 
 
   let(:console) { described_class.new }
-  let(:color) { described_class.new }
+  let(:color_string) { described_class.new }
+  let(:color_pegs) { described_class.new }
 
   before do
     $stdout = StringIO.new
@@ -78,11 +79,10 @@ describe Mastermind::Console do
   end
   
   it 'prepares startup messages' do
-    string_to_color = "Welcome to Mastermind"
-    string = "\33[35m#{string_to_color}\033[0m"
-    stringprint = string + "\nSecret Code has been Generated"+"\nGuess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win.\n"
+    string_to_color = "\033[35mWelcome to Mastermind\033[0m"
+    string_print = string_to_color + "\nSecret Code has been Generated"+"\nGuess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win.\n"
     console.prepare
-    expect($stdout.string).to eq(stringprint)
+    expect($stdout.string).to eq(string_print)
   end
   
   it 'lets the user know what the current guess number is' do

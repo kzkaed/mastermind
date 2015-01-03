@@ -1,5 +1,6 @@
 require_relative 'code_maker'
-require_relative 'color'
+require_relative 'color_string'
+require_relative 'color_pegs'
 
 module Mastermind
   class InvalidCode < Exception
@@ -7,8 +8,8 @@ module Mastermind
 class Console
     
     
-    attr_accessor :color
-    attr_reader :game
+    attr_accessor :color_string
+    attr_reader :game, :incorrect_color_message
 
     WELCOME = 'Welcome to Mastermind'
     SECRET_CODE_GEN = 'Secret Code has been Generated'
@@ -17,11 +18,15 @@ class Console
     INCORRECT_COLOR = 'incorrect_color'
     def initialize
         
-        @color = Mastermind::Color.new
+        @color_string = Mastermind::ColorString.new
+        @color_pegs = Mastermind::ColorPegs.new
+
+        @incorrect_color_message = color_string.red(INCORRECT_COLOR_MESSAGE)
+        @welcome = color_string.magenta(WELCOME)
     end
     
     def prepare
-      out(color.magenta(WELCOME))
+      out(@welcome)
       out(SECRET_CODE_GEN)
       out(DIRECTIONS)
     end
@@ -45,7 +50,7 @@ class Console
         guess = in_guess
         guess = game.validate(guess)
         if incorrect_color_message?(guess)
-          out(color.red(INCORRECT_COLOR_MESSAGE))
+          out(@incorrect_color_message)
           guess = ["","","",""]
         end
       end
