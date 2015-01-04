@@ -13,24 +13,27 @@ class Console
 
     WELCOME = 'Welcome to Mastermind'
     SECRET_CODE_GEN = 'Secret Code has been Generated'
-    DIRECTIONS = 'Guess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win.'
-    INCORRECT_COLOR_MESSAGE = 'Incorrect colors, guess again using |Red Yellow Blue Green Black White|'
-    INCORRECT_COLOR = 'incorrect_color'
-    def initialize
-        
-        @color_string = Mastermind::ColorString.new
 
+    INCORRECT_COLOR_MESSAGE = 'Incorrect colors, guess again'
+    INCORRECT_COLOR = 'incorrect_color'
+
+    def initialize
+        @color_string = Mastermind::ColorString.new
         pegs = Mastermind::Pegs.new
-        @console_color_pegs = pegs.console_color_pegs#hash
+        @console_color_pegs = pegs.console_color_pegs
         @console_key_pegs = pegs.console_key_pegs
         @incorrect_color_message = color_string.red(INCORRECT_COLOR_MESSAGE)
         @welcome = color_string.magenta(WELCOME)
+
+        colors = %w(Red Yellow Blue Green Black White)
+        format_out(translate_to_color_pegs(colors))
+        @directions = "Guess code of 4 from colors #{format_out(translate_to_color_pegs(colors))}, 8 tries to win."
     end
     
     def prepare
       out(@welcome)
       out(SECRET_CODE_GEN)
-      out(DIRECTIONS)
+      out(@directions)
     end
 
     def display_response(guess, response)
@@ -38,14 +41,12 @@ class Console
       out_response(response)
     end
 
-
-
     def display_current_turn(guess_number)
       out_current_guess_number(guess_number)
     end
 
-# this should partly be in game
-# how to fully test this - use a stub or mock
+    # this should partly be in game
+    # how to fully test this - use a stub or mock
     def in_guess_from_user_with_validation(game)
       guess = ["","","",""]
       while (guess == ["","","",""])
@@ -117,9 +118,7 @@ class Console
       gets.chomp
     end
 
-
-
-      def format_out(output_array)
+    def format_out(output_array)
         color_output_string = ""
         output_array.each do |color|
           color_output_string << ' ' + color + ' '
@@ -127,10 +126,7 @@ class Console
         color_output_string
       end
 
-
-
     def translate_to_color_pegs(color_array)
-      #guess["Red","Red","Red","Red"] or secret_code
       color_output_array = []
       color_array.each do |color|
         color_output_array << @console_color_pegs[color]
@@ -138,14 +134,13 @@ class Console
       color_output_array
     end
 
-  def translate_to_key_pegs(key_array)
-    #response ["","","White","Black"]
-    key_output_array = []
-    key_array.each do |key|
-      key_output_array << @console_key_pegs[key]
+    def translate_to_key_pegs(key_array)
+      key_output_array = []
+      key_array.each do |key|
+        key_output_array << @console_key_pegs[key]
+      end
+      key_output_array
     end
-    key_output_array
-  end
 
 
 

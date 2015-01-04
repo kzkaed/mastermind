@@ -39,8 +39,7 @@ describe Mastermind::Console do
   it 'defines constants for primary console messages' do
     expect(Mastermind::Console::WELCOME).to eq("Welcome to Mastermind")
     expect(Mastermind::Console::SECRET_CODE_GEN).to eq('Secret Code has been Generated')
-    expect(Mastermind::Console::INCORRECT_COLOR_MESSAGE).to eq("Incorrect colors, guess again using |Red Yellow Blue Green Black White|")
-    expect(Mastermind::Console::DIRECTIONS).to eq("Guess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win.")
+    expect(Mastermind::Console::INCORRECT_COLOR_MESSAGE).to eq("Incorrect colors, guess again")
     expect(Mastermind::Console::INCORRECT_COLOR).to eq("incorrect_color")
   end
 
@@ -62,11 +61,7 @@ describe Mastermind::Console do
     expect($stdout.string).to eq(message+"\n")
    end
 
-    it 'puts to console DIRECTIONS using out' do
-    message = Mastermind::Console::DIRECTIONS
-    console.out(message)
-    expect($stdout.string).to eq(message+"\n")
-  end
+
   
   it 'checks for INCORRECT_COLOR message' do
    guess = ["Red","Red","Red","Red"]
@@ -74,16 +69,14 @@ describe Mastermind::Console do
    expect(console.incorrect_color_message?(Mastermind::Console::INCORRECT_COLOR)).to eq(true)
  end
 
-  it 'puts to out INCORRECT_COLOR_MESSAGE' do
-    console.incorrect_color_message?('Incorrect Color')
-    expect($stdout.string).to match(Mastermind::Console::INCORRECT_COLOR_MESSAGE)
-  end
-  
   it 'prepares startup messages' do
-    string_to_color = "\033[35mWelcome to Mastermind\033[0m"
-    string_print = string_to_color + "\nSecret Code has been Generated"+"\nGuess a code of 4 from colors | Red Yellow Blue Green Black White |, 8 tries to win.\n"
     console.prepare
-    expect($stdout.string).to eq(string_print)
+    string1 = "\e[35mWelcome to Mastermind\e[0m\n"
+    string2 = "Secret Code has been Generated\n"
+    string3 = "Guess code of 4 from colors"
+    string4 = "  \033[31mRed\033[0m  \033[33mYellow\033[0m  \033[34mBlue\033[0m  \033[32mGreen\033[0m  \033[30mBlack\033[0m  \033[37mWhite\033[0m "
+    string5 = ", 8 tries to win.\n"
+    expect($stdout.string).to eq("#{string1}#{string2}#{string3}#{string4}#{string5}")
   end
   
   it 'lets the user know what the current guess number is' do
@@ -157,8 +150,9 @@ end
     expect($stdout.string).to eq(" \033[31mRed\033[0m  \033[31mRed\033[0m  \033[31mRed\033[0m  \033[31mRed\033[0m \n")
   end
 
-  # it 'return horizontal array of all color pegs' do
-  #  expect(console.format_out).to eq(["\033[31mRed\033[0m", "\033[33mYellow\033[0m", "\033[34mBlue\033[0m", "\033[32mGreen\033[0m", "\033[30mBlack\033[0m", "\033[37mWhite\033[0m"])
-  #end
+  it 'return horizontal array of all color pegs' do
+    output_array = console.translate_to_color_pegs(["Red","Yellow","Blue","Green","Black","White"])
+    expect(console.format_out(output_array)).to eq( " \033[31mRed\033[0m  \033[33mYellow\033[0m  \033[34mBlue\033[0m  \033[32mGreen\033[0m  \033[30mBlack\033[0m  \033[37mWhite\033[0m ")
+  end
 
 end
