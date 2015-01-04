@@ -1,6 +1,6 @@
 require_relative 'code_maker'
 require_relative 'color_string'
-require_relative 'color_pegs'
+require_relative 'pegs'
 
 module Mastermind
   class InvalidCode < Exception
@@ -9,7 +9,7 @@ class Console
     
     
     attr_accessor :color_string
-    attr_reader :game, :incorrect_color_message
+    attr_reader :game, :incorrect_color_message, :console_color_pegs, :console_key_pegs
 
     WELCOME = 'Welcome to Mastermind'
     SECRET_CODE_GEN = 'Secret Code has been Generated'
@@ -19,8 +19,10 @@ class Console
     def initialize
         
         @color_string = Mastermind::ColorString.new
-        @color_pegs = Mastermind::ColorPegs.new
 
+        pegs = Mastermind::Pegs.new
+        @console_color_pegs = pegs.console_color_pegs#hash
+        @console_key_pegs = pegs.console_key_pegs
         @incorrect_color_message = color_string.red(INCORRECT_COLOR_MESSAGE)
         @welcome = color_string.magenta(WELCOME)
     end
@@ -94,15 +96,21 @@ class Console
     end
 
     def out_guess(guess)
-      out "Your guess is #{guess}"
+      color_output_array = translate_to_color_pegs(guess)
+      color_output_string = format_out(color_output_array)
+      out "Your guess is #{color_output_string}"
     end
 
     def out_response(response)
-      out "The response is #{response}"
+      key_output_array = translate_to_key_pegs(response)
+      key_output_string = format_out(key_output_array)
+      out "The response is #{key_output_string}"
     end
 
     def out_secret_code(secret_code)
-      out "The secret code #{secret_code}"
+      color_output_array = translate_to_color_pegs(secret_code)
+      color_output_string = format_out(color_output_array)
+      out "The secret code #{color_output_string}"
     end
 
     def in
@@ -110,7 +118,40 @@ class Console
     end
 
 
-    private
+
+      def format_out(output_array)
+        color_output_string = ""
+        output_array.each do |color|
+          color_output_string << ' ' + color + ' '
+        end
+        color_output_string
+      end
+
+
+
+    def translate_to_color_pegs(color_array)
+      #guess["Red","Red","Red","Red"] or secret_code
+      color_output_array = []
+      color_array.each do |color|
+        color_output_array << @console_color_pegs[color]
+      end
+      color_output_array
+    end
+
+  def translate_to_key_pegs(key_array)
+    #response ["","","White","Black"]
+    key_output_array = []
+    key_array.each do |key|
+      key_output_array << @console_key_pegs[key]
+    end
+    key_output_array
+  end
+
+
+
+
+
+  private
 
 
 

@@ -8,6 +8,7 @@ describe Mastermind::Console do
 
 
   let(:console) { described_class.new }
+
   let(:color_string) { described_class.new }
   let(:color_pegs) { described_class.new }
 
@@ -90,9 +91,19 @@ describe Mastermind::Console do
     expect($stdout.string).to eq("Guess number 4\n")
   end
 
-  it 'puts to console guess from code_maker' do
+  it 'puts to console guess' do
     console.out_guess(["Red", "Red", "Red", "Red"])
-    expect($stdout.string).to eq("Your guess is [\"Red\", \"Red\", \"Red\", \"Red\"]\n")
+    expect($stdout.string).to eq("Your guess is  \033[31mRed\033[0m  \033[31mRed\033[0m  \033[31mRed\033[0m  \033[31mRed\033[0m \n")
+  end
+
+  it 'puts to console response' do
+    console.out_response(["", "", "White", "Black"])
+    expect($stdout.string).to eq("The response is  o  o  \033[37mWhite\033[0m  \033[30mBlack\033[0m \n")
+  end
+
+  it 'puts to console secret code' do
+    console.out_secret_code(["Red", "Red", "Red", "Red"])
+    expect($stdout.string).to eq("The secret code  \033[31mRed\033[0m  \033[31mRed\033[0m  \033[31mRed\033[0m  \033[31mRed\033[0m \n")
   end
 
   it 'puts user prompt message: Enter color 1' do
@@ -118,12 +129,36 @@ it 'receives guess input' do
   expect(console.in_guess).to eq(["Blue",nil, nil, nil])
 end
 
-  it 'displays secret code with game result' do
-    secret_code = ["Red", "Red", "Red", "Red"]
-    console.out_secret_code(secret_code)
-    expect($stdout.string).to eq("The secret code [\"Red\", \"Red\", \"Red\", \"Red\"]\n")
+
+
+  it 'translates the string arrays to color output' do
+
+      expect(console.translate_to_color_pegs(["Red","Red","Red","Red"])).to eq([
+                                                                              "\033[31mRed\033[0m",
+                                                                              "\033[31mRed\033[0m",
+                                                                              "\033[31mRed\033[0m",
+                                                                              "\033[31mRed\033[0m"])
 
   end
 
+
+
+  it 'formats output to console in color return a string' do
+    expect(console.format_out([
+                                  "\033[31mRed\033[0m",
+                                  "\033[31mRed\033[0m",
+                                  "\033[31mRed\033[0m",
+                                  "\033[31mRed\033[0m"])).to eq(" \033[31mRed\033[0m  \033[31mRed\033[0m  \033[31mRed\033[0m  \033[31mRed\033[0m ")
+  end
+
+  it 'out formatted string to out' do
+    string_from_format_out = " \033[31mRed\033[0m  \033[31mRed\033[0m  \033[31mRed\033[0m  \033[31mRed\033[0m "
+    console.out(string_from_format_out)
+    expect($stdout.string).to eq(" \033[31mRed\033[0m  \033[31mRed\033[0m  \033[31mRed\033[0m  \033[31mRed\033[0m \n")
+  end
+
+  # it 'return horizontal array of all color pegs' do
+  #  expect(console.format_out).to eq(["\033[31mRed\033[0m", "\033[33mYellow\033[0m", "\033[34mBlue\033[0m", "\033[32mGreen\033[0m", "\033[30mBlack\033[0m", "\033[37mWhite\033[0m"])
+  #end
 
 end

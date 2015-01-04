@@ -15,14 +15,21 @@ module Mastermind
     INCORRECT_COLOR = "incorrect_color"
 
     def initialize
-      pegs = ColorPegs.new
+      pegs = Pegs.new
       @color_pegs = [
           pegs.red,
           pegs.yellow,
           pegs.blue,
           pegs.green,
           pegs.black,
-          pegs.white
+          pegs.white,
+
+      ]
+
+      @key_pegs = [
+          pegs.black,
+          pegs.white,
+          pegs.empty
       ]
     end
 
@@ -30,6 +37,14 @@ module Mastermind
     # @return [color_pegs]
     def color_pegs
       @color_pegs.each do |peg|
+        print ' ' + peg + ' '
+        ' ' + peg + ' '
+      end
+    end
+
+    # @return [key_pegs]
+    def key_pegs
+      @key_pegs.each do |peg|
         print ' ' + peg + ' '
         ' ' + peg + ' '
       end
