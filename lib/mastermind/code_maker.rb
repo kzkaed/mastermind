@@ -5,20 +5,36 @@ module Mastermind
 
   class CodeMaker
 
-    attr_accessor :secret_code
-    attr_accessor :random_nums
-    attr_accessor :response
-    attr_accessor :guess
-    attr_accessor :message
+    attr_accessor :secret_code, :random_nums, :response, :guess, :message
 
-
-    #"\033[31m#{string_to_color}\033[0m"
+    attr_reader :color_pegs
 
     COLORS = %w[Red Yellow Black White Blue Green]
     GUESS_MATCH = "guess_match"
     CODE_MATCH = "code_match"
     INCORRECT_COLOR = "incorrect_color"
-    
+
+    def initialize
+      pegs = ColorPegs.new
+      @color_pegs = [
+          pegs.red,
+          pegs.yellow,
+          pegs.blue,
+          pegs.green,
+          pegs.black,
+          pegs.white
+      ]
+    end
+
+
+    # @return [color_pegs]
+    def color_pegs
+      @color_pegs.each do |peg|
+        print ' ' + peg + ' '
+        ' ' + peg + ' '
+      end
+    end
+
     def place_generated_code
       secret_code =[]
       generate_random_code.each_index do |i|

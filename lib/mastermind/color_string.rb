@@ -7,24 +7,24 @@ module Mastermind
       "#{color_code}#{text}\033[0m"
     end
 
-    def black(text); color(text, "\033[30;47m"); end
+    def black(text); color(text, "\033[30m"); end
     def red(text); color(text, "\033[31m"); end
     def green(text); color(text, "\033[32m"); end
     def yellow(text); color(text, "\033[33m"); end
     def blue(text); color(text, "\033[34m"); end
-    def white(text); color(text, "\033[37;40m"); end
+    def white(text); color(text, "\033[37m"); end
 
-    def white_black(text); color(text, "\033[37;40m"); end
-    def black_white(text); color(text, "\033[30;47m"); end
-    def red_white(text); color(text, "\033[31;47m"); end
-    def green_white(text); color(text, "\033[32;47m"); end
-    def yellow_white(text); color(text, "\033[33;47m"); end
-    def blue_white(text); color(text, "\033[34;47m"); end
+    def black_on_white(text); color(text, "\033[30;47m"); end
+    def white_on_black(text); color(text, "\033[37;40m"); end
+    def magenta(text)
+      color(text, "\033[35m")
+    end
 
-    def magenta(text); color(text, "\033[35m"); end
   end
 
 end
+
+# "\033[37;40m#{White}\033[0m"
 
 #### ANSI Escape Sequences
 #### Example

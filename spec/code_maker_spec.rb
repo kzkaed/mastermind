@@ -114,7 +114,9 @@ describe Mastermind::CodeMaker do
     expect(code_maker.are_colors_incorrect?(["White", "Black", "Red", "Red"])).to eq(false)
   end
 
-
+  it 'return horizontal array of color pegs' do
+      expect(code_maker.color_pegs).to eq(["\033[31mRed\033[0m", "\033[33mYellow\033[0m", "\033[34mBlue\033[0m", "\033[32mGreen\033[0m", "\033[30mBlack\033[0m", "\033[37mWhite\033[0m"])
+  end
   end
 ######
 #  if there are duplicate colours in the guess, they cannot all be awarded a key peg unless they correspond to the same
