@@ -155,4 +155,27 @@ end
     expect(console.format_out(output_array)).to eq( " \033[31mRed\033[0m  \033[33mYellow\033[0m  \033[34mBlue\033[0m  \033[32mGreen\033[0m  \033[30mBlack\033[0m  \033[37mWhite\033[0m ")
   end
 
+  it 'formats user input to be validated' do
+    guess = ["red","rEd","reD","RED"]
+    expect(console.format_guess(guess)).to eq(["Red","Red","Red","Red"])
+  end
+
+  it 'checks guess contains correct color input' do
+      guess = ["Purple"," ","!","Purple Brown"]
+      expect(console.are_colors_incorrect?(guess)).to eq(true)
+ end
+
+  it 'validates guess also formats' do
+    expect(console.validate(["red","RED","reD", "Red"])).to eq(["Red","Red","Red","Red"])
+  end
+
+  it 'returns message if guess is not a correct color ' do
+    expect(console.validate(["Cyan","Red","Red" "Red"])).to eq(INCORRECT_COLOR)
+  end
+
+  it 'in guess validation' do
+    #console.in_guess_validation
+  end
+
+
 end

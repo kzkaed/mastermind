@@ -69,7 +69,7 @@ describe Mastermind::Runner do
     
     runner.run
 
-    expect(user_interface.in_guess_from_user_with_validation_called?).to eq(true)
+    expect(user_interface.in_guess_validation_called?).to eq(true)
     expect(game.take_turn_called?).to eq(true)
     expect(game.current_guess).to eq(guess)
   end

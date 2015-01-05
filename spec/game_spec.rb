@@ -29,9 +29,9 @@ describe Mastermind::Game do
     expect(game.code_maker.secret_code).not_to eq(nil)
   end
   
-  it 'validates guess' do
-    expect(game.validate(["red","red","Red","Red"])).to eq(["Red","Red","Red","Red"])
-  end
+ # it 'validates guess' do
+  #  expect(game.validate(["red","red","Red","Red"])).to eq(["Red","Red","Red","Red"])
+  #end
   
   it "takes turn" do  
     secret_code = game.generate_code.dup 

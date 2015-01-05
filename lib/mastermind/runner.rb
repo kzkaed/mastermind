@@ -19,7 +19,7 @@ module Mastermind
       
       until @game.end_of_game?(@current_turn, @response) do
         @user_interface.display_current_turn(@game.current_turn)
-        guess = @user_interface.in_guess_from_user_with_validation(@game)
+        guess = @user_interface.in_guess_validation
         @response = @game.take_turn(guess)
         @user_interface.display_response(guess, response)
         @current_turn = @game.current_turn

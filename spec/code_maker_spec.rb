@@ -45,6 +45,11 @@ describe Mastermind::CodeMaker do
     expect(code_maker.validate(["red","RED","reD", "Red"])).to eq(["Red","Red","Red","Red"])
   end
 
+
+  it 'validates guess' do
+    expect(code_maker.validate(["red","red","red","red"])).to eq(["Red","Red","Red","Red"])
+  end
+
   it 'returns message if guess is not a correct color ' do
     INCORRECT_COLOR = "incorrect_color"
     expect(code_maker.validate(["Cyan","Red","Red" "Red"])).to eq(INCORRECT_COLOR)
@@ -103,9 +108,6 @@ describe Mastermind::CodeMaker do
   end
 
 
-  it 'validates guess' do
-    expect(code_maker.validate(["red","red","red","red"])).to eq(["Red","Red","Red","Red"])
-  end
 
   it 'test if colors are incorrect' do
     expect(code_maker.are_colors_incorrect?([" ", "Red", "Red", "Red"])).to eq(true)
