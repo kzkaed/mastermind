@@ -25,7 +25,6 @@ describe Mastermind::Console do
     expect(console.prepare).to eq(nil)
   end
 
-
   it 'uses out to put a message to the console' do
     console.out('a message')
     expect($stdout.string).to match('a message')
@@ -169,13 +168,27 @@ end
     expect(console.validate(["red","RED","reD", "Red"])).to eq(["Red","Red","Red","Red"])
   end
 
+  it 'test if colors are incorrect' do
+    expect(console.are_colors_incorrect?([" ", "Red", "Red", "Red"])).to eq(true)
+    expect(console.are_colors_incorrect?(["Sally", "Purple", "", "!"])).to eq(true)
+    expect(console.are_colors_incorrect?(["Red", "Yellow", "Blue", "Green"])).to eq(false)
+    expect(console.are_colors_incorrect?(["White", "Black", "Red", "Red"])).to eq(false)
+  end
+
   it 'returns message if guess is not a correct color ' do
-    expect(console.validate(["Cyan","Red","Red" "Red"])).to eq(INCORRECT_COLOR)
+    expect(console.validate(["Cyan","Red","Red" "Red"])).to eq(Mastermind::Console::INCORRECT_COLOR)
   end
 
   it 'in guess validation' do
     #console.in_guess_validation
   end
+=begin
+  it 'returns horizontal array of color pegs' do
+    expect(console.color_pegs).to eq(["\033[31mRed\033[0m", "\033[33mYellow\033[0m", "\033[34mBlue\033[0m", "\033[32mGreen\033[0m", "\033[30mBlack\033[0m", "\033[37mWhite\033[0m"])
+  end
 
-
+  it 'returns horizontal array of key pegs' do
+    expect(console.key_pegs).to eq(["\033[30mBlack\033[0m", "\033[37mWhite\033[0m","o"])
+  end
+=end
 end

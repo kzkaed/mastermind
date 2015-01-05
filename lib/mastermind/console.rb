@@ -7,7 +7,6 @@ module Mastermind
   end
 class Console
     
-    
     attr_accessor :color_string
     attr_reader :game, :incorrect_color_message, :console_color_pegs, :console_key_pegs
 
@@ -43,21 +42,7 @@ class Console
       out_current_guess_number(guess_number)
     end
 
-    # this should partly be in game
     # how to fully test this - use a stub or mock
-    def in_guess_from_user_with_validation(game)
-      guess = ["","","",""]
-      while (guess == ["","","",""])
-        guess = in_guess
-        guess = game.validate(guess)
-        if incorrect_color_message?(guess)
-          out(@incorrect_color_message)
-          guess = ["","","",""]
-        end
-      end
-      guess
-    end
-
     def in_guess_validation
       guess = ["","","",""]
       while (guess == ["","","",""])
@@ -69,6 +54,15 @@ class Console
         end
       end
       guess
+    end
+
+    def validate(guess_array)
+      processed_guess = []
+      processed_guess = format_guess(guess_array)
+      if are_colors_incorrect?(processed_guess)
+        return  INCORRECT_COLOR
+      end
+      processed_guess
     end
 
     def format_guess (guess_array)
@@ -88,15 +82,6 @@ class Console
       false
     end
 
-    def validate(guess_array)
-      processed_guess = []
-      processed_guess = format_guess(guess_array)
-      if are_colors_incorrect?(processed_guess)
-        return  INCORRECT_COLOR
-      end
-      processed_guess
-    end
-
     def incorrect_color_message?(guess)#private?
       return true if guess == INCORRECT_COLOR
       false
@@ -110,7 +95,6 @@ class Console
         out_secret_code(secret_code)
       end
     end
-
 
     def out (message)
       puts(message)

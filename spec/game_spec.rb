@@ -6,7 +6,6 @@ require 'mastermind/code_maker'
 describe Mastermind::Game do
 
   let(:game) { described_class.new }
-  
 
   it 'finds end of game with all black array response' do  
     expect(game.end_of_game?( 1 , ["Black","Black","Black","Black"])).to eq(true)
@@ -29,10 +28,6 @@ describe Mastermind::Game do
     expect(game.code_maker.secret_code).not_to eq(nil)
   end
   
- # it 'validates guess' do
-  #  expect(game.validate(["red","red","Red","Red"])).to eq(["Red","Red","Red","Red"])
-  #end
-  
   it "takes turn" do  
     secret_code = game.generate_code.dup 
 
@@ -49,7 +44,4 @@ describe Mastermind::Game do
      game.take_turn(guess)
      expect(game.current_turn).to eq(3)
   end
- 
-
- 
 end
