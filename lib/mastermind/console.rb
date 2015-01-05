@@ -7,13 +7,12 @@ module Mastermind
   end
 class Console
     
-    
     attr_accessor :color_string
     attr_reader :game, :incorrect_color_message, :console_color_pegs, :console_key_pegs
 
+    COLORS = %w(Red Yellow Blue Green Black White)
     WELCOME = 'Welcome to Mastermind'
     SECRET_CODE_GEN = 'Secret Code has been Generated'
-
     INCORRECT_COLOR_MESSAGE = 'Incorrect colors, guess again'
     INCORRECT_COLOR = 'incorrect_color'
 
@@ -24,10 +23,8 @@ class Console
         @console_key_pegs = pegs.console_key_pegs
         @incorrect_color_message = color_string.red(INCORRECT_COLOR_MESSAGE)
         @welcome = color_string.magenta(WELCOME)
-
-        colors = %w(Red Yellow Blue Green Black White)
-        format_out(translate_to_color_pegs(colors))
-        @directions = "Guess code of 4 from colors #{format_out(translate_to_color_pegs(colors))}, 8 tries to win."
+        format_out(translate_to_color_pegs(COLORS))
+        @directions = "Guess code of 4 from colors #{format_out(translate_to_color_pegs(COLORS))}, 8 tries to win."
     end
     
     def prepare
@@ -45,19 +42,44 @@ class Console
       out_current_guess_number(guess_number)
     end
 
-    # this should partly be in game
     # how to fully test this - use a stub or mock
-    def in_guess_from_user_with_validation(game)
+    def in_guess_validation
       guess = ["","","",""]
       while (guess == ["","","",""])
         guess = in_guess
-        guess = game.validate(guess)
+        guess = validate(guess)
         if incorrect_color_message?(guess)
           out(@incorrect_color_message)
           guess = ["","","",""]
         end
       end
       guess
+    end
+
+    def validate(guess_array)
+      processed_guess = []
+      processed_guess = format_guess(guess_array)
+      if are_colors_incorrect?(processed_guess)
+        return  INCORRECT_COLOR
+      end
+      processed_guess
+    end
+
+    def format_guess (guess_array)
+      process_guess = []
+      guess_array.each_index do |index|
+        process_guess[index] = guess_array[index].to_s.capitalize.strip
+      end
+      process_guess
+    end
+
+    def are_colors_incorrect?(guess_array)
+      guess_array.each do |code|
+        if !COLORS.include?(code)
+          return true
+        end
+      end
+      false
     end
 
     def incorrect_color_message?(guess)#private?
@@ -73,7 +95,6 @@ class Console
         out_secret_code(secret_code)
       end
     end
-
 
     def out (message)
       puts(message)
@@ -142,18 +163,6 @@ class Console
       key_output_array
     end
 
-
-
-
-
-  private
-
-
-
-
-
-
-end
-
+  end
 end
 

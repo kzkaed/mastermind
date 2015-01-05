@@ -20,9 +20,9 @@ module Mastermind
       @code_maker.determine_response(guess)#response
    end
     
-    def validate(guess)
-      @code_maker.validate(guess)#guess_processed
-    end
+    #def validate(guess)#need this in game?
+    #  @code_maker.validate(guess)#guess_processed
+    #end
     
     def end_of_game?(current_turn, response)
       no_more_turns?(current_turn) || won?(response)

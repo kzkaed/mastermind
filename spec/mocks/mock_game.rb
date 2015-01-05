@@ -33,10 +33,10 @@ class MockGame
    end
    
    
-   def validate(guess)
-     @validate_called = true
-     return guess
-   end
+  # def validate(guess)
+   #  @validate_called = true
+    # return guess
+   #end
    
    def end_of_game?(current_turn, response)
     @end_of_game_called = true
