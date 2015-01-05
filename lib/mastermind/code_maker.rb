@@ -7,7 +7,7 @@ module Mastermind
 
     attr_accessor :secret_code, :random_nums, :response, :guess, :message
 
-    attr_reader :color_pegs
+    #attr_reader :color_pegs
 
     COLORS = %w[Red Yellow Black White Blue Green]
     GUESS_MATCH = "guess_match"
@@ -23,7 +23,6 @@ module Mastermind
           pegs.green,
           pegs.black,
           pegs.white,
-
       ]
 
       @key_pegs = [
