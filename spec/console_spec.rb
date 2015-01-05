@@ -182,13 +182,4 @@ end
   it 'in guess validation' do
     #console.in_guess_validation
   end
-=begin
-  it 'returns horizontal array of color pegs' do
-    expect(console.color_pegs).to eq(["\033[31mRed\033[0m", "\033[33mYellow\033[0m", "\033[34mBlue\033[0m", "\033[32mGreen\033[0m", "\033[30mBlack\033[0m", "\033[37mWhite\033[0m"])
-  end
-
-  it 'returns horizontal array of key pegs' do
-    expect(console.key_pegs).to eq(["\033[30mBlack\033[0m", "\033[37mWhite\033[0m","o"])
-  end
-=end
 end
