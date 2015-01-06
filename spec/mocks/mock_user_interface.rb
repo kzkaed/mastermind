@@ -24,11 +24,6 @@ class MockUserInterface
    def display_current_turn(current_turn)
      @display_current_turn_called = true
    end
-   
-   def in_guess_from_user_with_validation(game)
-     @in_guess_from_user_with_validation_called = true
-     @guesses.pop
-   end
 
   def in_guess_validation
     @in_guess_validation_called = true
