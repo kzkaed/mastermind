@@ -4,13 +4,14 @@ require_relative 'code_breaker'
 module Mastermind
 
   class Game
-    TURN_MAX = 9
-    attr_reader :won, :code_maker, :secret_code
-    attr_accessor :current_turn, :code_breaker
+    TURN_MAX = 50
+    attr_reader :won, :code_maker, :secret_code, :code_breaker
+    attr_accessor :current_turn
 
     def initialize
-      @code_breaker = Mastermind::CodeBreaker.new
       @code_maker = Mastermind::CodeMaker.new
+      @code_breaker = Mastermind::CodeBreaker.new
+
       @current_turn = 1
     end
     
@@ -19,8 +20,8 @@ module Mastermind
       #@secret_code = @code_maker.place_code(["Black","Black","Black","White"])
     end
 
-    def computer_guess
-      @code_breaker.make_guess
+    def computer_guess(response)
+      @code_breaker.make_guess(response)
     end
 
     def take_turn(guess)

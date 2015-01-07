@@ -33,7 +33,8 @@ class MockGame
     return @responses.pop
   end
 
-  def computer_guess
+  def computer_guess(response)
+    #@current_response = response
     @computer_guess_called = true
     return @guesses.pop
   end

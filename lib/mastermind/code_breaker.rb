@@ -10,9 +10,18 @@ module Mastermind
     COLORS = %w(Red Yellow Blue Green Black White)
 
 
-    def make_guess
-      guess = []
+    def make_guess(response)
       guess_code = [0,0,0,0]
+      p response
+
+      if response == ["","","",""]
+        guess_code.map! { |num| num + 1}
+        return guess = map_to_colors(guess_code)
+        if response == ["","","",""]
+          guess_code.map! { |num| num + 1}
+        end
+      end
+
       guess = map_to_colors(guess_code)
     end
 

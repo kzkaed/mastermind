@@ -19,7 +19,7 @@ describe Mastermind::RunnerComp do
   end
 
   it "current guess starts as 0" do
-    expect(runner_comp.current_turn).to eql(0)
+    expect(game.current_turn).to eql(1)
   end
 
   it 'response start as empty array' do

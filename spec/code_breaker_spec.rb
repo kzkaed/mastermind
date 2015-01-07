@@ -55,10 +55,13 @@ end
     expect(code_breaker.map_to_colors(guess_nums)).to eq(["Red","Red","Red","Red"])
   end
 
-  #eleminate colors
   it 'makes a guess all one color' do
-    expect(code_breaker.make_guess).to eq(["Red","Red","Red","Red"])
+    response = []
+    expect(code_breaker.make_guess(response)).to eq(["Red","Red","Red","Red"])
   end
+
+
+
 
 
 end

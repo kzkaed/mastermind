@@ -7,12 +7,13 @@ describe Mastermind::Game do
 
   let(:game) { described_class.new }
 
+
   it 'finds end of game with all black array response' do
     expect(game.end_of_game?(1, ["Black", "Black", "Black", "Black"])).to eq(true)
   end
 
-  it 'finds end of game with current_guess maximum 8' do
-    expect(game.end_of_game?(9, ["", "", "", ""])).to eq(true)
+  it 'finds end of game with current_guess maximum 50' do
+    expect(game.end_of_game?(50, ["", "", "", ""])).to eq(true)
   end
 
   it 'won? return true if won game' do
@@ -46,8 +47,8 @@ describe Mastermind::Game do
   end
 
   it 'lets computer make a guess' do
-
-    expect(game.computer_guess).to eq(["Red", "Red", "Red", "Red"])
+    response = []
+    expect(game.computer_guess(response)).to eq(["Red", "Red", "Red", "Red"])
   end
 
   it 'initializes code_breaker' do
