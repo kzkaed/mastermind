@@ -90,6 +90,7 @@ class Console
     def display_game_result(result,secret_code)
       if result == true
         out("YOU WON")
+        out_secret_code(secret_code)
       else
         out("YOU LOST")
         out_secret_code(secret_code)

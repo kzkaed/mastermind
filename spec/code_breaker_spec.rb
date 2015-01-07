@@ -60,8 +60,19 @@ end
     expect(code_breaker.make_guess(response)).to eq(["Red","Red","Red","Red"])
   end
 
+  it 'makes a new guess with yellow color passed in to eliminate that color' do
+    guess = ["Red","Red","Red","Red"]
+    response = ["","","",""]
+    color = "Yellow"
+    expect(code_breaker.make_new_guess(guess, response, color)).to eq(["Yellow","Yellow","Yellow","Yellow"])
+  end
 
-
+  it 'makes a new guess with any color passed in to eliminate that color' do
+    guess = ["Red","Yellow","Blue","Green"]
+    response = ["","","",""]
+    color = "White"
+    expect(code_breaker.make_new_guess(guess, response, color)).to eq(["White","White","White","White"])
+  end
 
 
 end

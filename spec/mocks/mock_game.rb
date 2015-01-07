@@ -1,41 +1,48 @@
 class MockGame
-  attr_accessor :number_of_turns, :current_guess, :responses, :won, :current_turn, :guesses
+  attr_accessor :number_of_turns, :current_guess, :responses, :won, :current_turn, :guesses, :current_color
   attr_reader :secret_code
+
+  COLORS = %w(Red Yellow Blue Green Black White)
 
   def initialize
     @won = true
     @end_of_game_called = false
     @number_of_turns = 8
-    @current_guess = nil
+    @end_of_game_called = false
     @take_turn_called = false
     @generated_code_called = false
     @validate_called = false
     @responses = []
     @guesses = []
-    @end_of_game_called = false
+    @current_guess = []
+    @current_response = []
     @current_turn = 1
     @current_guess_called = false
     @computer_guess_called = false
+    @current_color = "Red"
   end
-
 
   def generate_code
     @secret_code = ["Red", "Yellow", "Blue", "Green"]
     return @generated_code_called = true
   end
 
-
   def take_turn(guess)
     @take_turn_called = true
     @number_of_turns = @number_of_turns - 1
     @current_guess = guess
     @current_turn = @current_turn + 1
+    #@current_color = @current_color + 1
     return @responses.pop
   end
 
-  def computer_guess(response)
-    #@current_response = response
+  def computer_guess(guess, response, color)
+
     @computer_guess_called = true
+    @current_guess = guess
+    @current_response = response
+    @current_color = color
+
     return @guesses.pop
   end
 

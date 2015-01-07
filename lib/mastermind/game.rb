@@ -6,13 +6,18 @@ module Mastermind
   class Game
     TURN_MAX = 50
     attr_reader :won, :code_maker, :secret_code, :code_breaker
-    attr_accessor :current_turn
+    attr_accessor :current_turn, :current_color, :current_guess
+
+    COLORS = %w(Red Yellow Blue Green Black White)
 
     def initialize
       @code_maker = Mastermind::CodeMaker.new
       @code_breaker = Mastermind::CodeBreaker.new
 
       @current_turn = 1
+      @current_color = 0 #init to red
+      @current_guess = []
+
     end
     
     def generate_code
@@ -20,14 +25,21 @@ module Mastermind
       #@secret_code = @code_maker.place_code(["Black","Black","Black","White"])
     end
 
-    def computer_guess(response)
-      @code_breaker.make_guess(response)
+    def computer_guess(guess,response,color)
+      #color = COLORS[current_color]
+      if (@current_color == 6)
+        @current_color = 0
+      end
+      @current_guess = @code_breaker.make_new_guess(guess,response,COLORS[current_color])#return guess
     end
+
 
     def take_turn(guess)
       @current_turn = @current_turn + 1
 
-      @code_maker.determine_response(guess)#response
+      @current_color = @current_color + 1
+
+      @code_maker.determine_response(guess)#returns response
    end
     
     def end_of_game?(current_turn, response)

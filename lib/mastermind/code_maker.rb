@@ -41,7 +41,7 @@ module Mastermind
       response = guess_equals_code_position_and_color(guess_clone, secret_code_clone, response)
       response = guess_contains_code_color(guess_clone, secret_code_clone, response)
 
-      response.sort
+      #response.sort
     end
 
     private

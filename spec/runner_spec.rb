@@ -18,9 +18,6 @@ describe Mastermind::Runner do
     expect(game.generate_code_called?).to eq(true)
   end
 
-  it "current guess starts as 0" do
-    expect(runner.current_turn).to eql(0)
-  end
   
   it 'response start as empty array' do
     expect(runner.response).to eq([])

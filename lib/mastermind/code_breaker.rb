@@ -25,12 +25,14 @@ module Mastermind
       guess = map_to_colors(guess_code)
     end
 
-
-
-
-
-
-
+    def make_new_guess(guess, response, color)
+      guess = ["","","",""] if guess == []
+      response = ["","","",""] if response == []
+      #the new guess is made the next color if response not all black - not using "do" but block
+      #only works if not response is not sorted!
+      response.each_with_index { |peg, index| guess[index] = color if peg != "Black" }
+      return guess
+    end
 
     def make_guess_divide
       guess = []
