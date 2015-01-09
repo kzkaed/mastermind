@@ -5,7 +5,7 @@ module Mastermind
 
   class CodeBreaker
 
-    attr_reader :response
+    attr_reader :response, :color_count
 
     COLORS = %w(Red Yellow Blue Green Black White)
 
@@ -28,9 +28,16 @@ module Mastermind
       response = ["", "", "", ""] if response == []
       guess = []
 
-        if @turn_number < COLORS.length
+        if @turn_number <= COLORS.length
+          if @turn_number == 6
+            count_colors(response, COLORS[@turn_number-1])#only count colors
+            @turn_number = @turn_number + 1
+            guess = make_combination_guess(response)
+          else
           guess = make_solid_color_guess(response, COLORS[@turn_number])
+          count_colors(response, COLORS[@turn_number-1])#being counted by new guess
           @turn_number = @turn_number + 1
+          end
         else
           guess = make_combination_guess(response)
         end
@@ -41,39 +48,40 @@ module Mastermind
     def make_solid_color_guess(response, color)
       response = ["", "", "", ""] if response == []
       guess = [color,color,color,color]
-      count_colors(response,color)
       return guess
     end
 
     def make_combination_guess(response)
       guess = ["","","",""]
-      new_color_set = get_new_color_set(@color_count)
-      color = get_color_from_new_set(new_color_set)
-      response.each_with_index { |peg, index| guess[index] = color if peg != "Black" }
+      color_set = get_color_set(@color_count)#red, yellow
+      p response
+      p guess
+      p "color_set",color_set
+      color_set.each {|color| p color }
+      guess
     end
 
-    def get_new_color_set(old_color_set)#hash
-      old_color_set.each { |key,value| do_something(value) if key == 'x' }
-      return new_color_set
+    def get_color_set(old_color_set)
+
+      #color_set = old_color_set.select {|key, value| key if value > 0}#return hash
+
+      color_set = old_color_set.map {|key, value| key if value > 0}
+      color_set.compact!#return array
+      p "color_set return",color_set
+      return color_set
     end
 
-    def get_color_from_new_set(new_color_set)#hash
-
+    def get_color_from_set(color_set)#hash
+      color_set_size = color_set.length
 
       return color
     end
 
 
-    def make_one_color_guesses(response, color)
-      response = ["", "", "", ""] if response == []
-      guess = [color,color,color,color]
-      return guess
-    end
-
     def count_colors(response, color)
       response.each {|peg| @color_count[color] = plus_one(@color_count[color]) if peg == "Black" || peg == "White" }
-
-      return @color_count
+      p "in count colors ",@color_count
+      @color_count
     end
 
     def plus_one (value)
