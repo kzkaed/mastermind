@@ -74,6 +74,11 @@ end
     expect(code_breaker.make_new_guess(guess, response, color)).to eq(["White","White","White","White"])
   end
 
+  it 'make solid color guess' do
+    color = "Red"
+    response = ["","","",""]
+    expect(code_breaker.make_solid_color_guess(response, color)).to eq(["Red","Red","Red","Red"])
+  end
 
 end
 

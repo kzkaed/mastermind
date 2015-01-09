@@ -22,8 +22,6 @@ module Mastermind
           "White" => 0
       }
 
-      @color_counts_made = false
-
     end
 
     def guess(response)
@@ -43,9 +41,7 @@ module Mastermind
     def make_solid_color_guess(response, color)
       response = ["", "", "", ""] if response == []
       guess = [color,color,color,color]
-      return guess
       count_colors(response,color)
-
       return guess
     end
 
