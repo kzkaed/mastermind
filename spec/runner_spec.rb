@@ -2,12 +2,14 @@ require 'spec_helper'
 require 'mastermind/runner'
 require 'mocks/mock_user_interface'
 require 'mocks/mock_game'
+require 'mocks/mock_player'
 
 describe Mastermind::Runner do
   
   let!(:game) { MockGame.new}
   let!(:user_interface) {MockUserInterface.new}
-  let(:runner) {described_class.new(user_interface, game)}
+  let!(:player) {MockPlayer.new}
+  let(:runner) {described_class.new(user_interface, game, player)}
 
   it "creates the game" do
     expect(runner.game).to eq(game)
@@ -37,12 +39,13 @@ describe Mastermind::Runner do
     expect(user_interface.display_current_turn_called?).to eq(true)    
   end
   
-  it "user interface displays response" do
+  it "user interface displays guess and response" do
     game.number_of_turns = 1
+    guess = ["Red", "Red", "Red", "Red"]
+    player.guesses << guess
     response = ["Black", "Black", "Black", "Black"]
     game.responses << response
-    guess = ["Red", "Red", "Red", "Red"]
-    user_interface.guesses << guess
+
     runner.run
     
     expect(user_interface.display_response_called?).to eq(true)
@@ -58,23 +61,17 @@ describe Mastermind::Runner do
     expect(user_interface.display_game_result_called?).to eq(true)
     expect(user_interface.result).to eq(false)
   end
-  
+
   it "sends guess to game" do
     game.number_of_turns = 1
     guess = ["Red", "Red", "Red", "Red"]
-    user_interface.guesses << guess
+    player.guesses << guess
     
     runner.run
 
-    expect(user_interface.in_guess_validation_called?).to eq(true)
+    expect(player.guess_called?).to eq(true)
     expect(game.take_turn_called?).to eq(true)
     expect(game.current_guess).to eq(guess)
   end
 
-
-
-  
-  
-  
-  
 end

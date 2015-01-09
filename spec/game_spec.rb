@@ -46,16 +46,5 @@ describe Mastermind::Game do
     expect(game.current_turn).to eq(3)
   end
 
-  it 'has computer make a guess' do
-    guess = []
-    response =[]
-    color = "Red"
 
-    expect(game.computer_guess(guess ,response ,color)).to eq(["Red","Red","Red","Red"])
-  end
-
-  it 'initializes code_breaker' do
-    expect(game.code_breaker).not_to eq(nil)
-
-  end
 end

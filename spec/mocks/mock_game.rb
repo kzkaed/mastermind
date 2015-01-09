@@ -18,7 +18,7 @@ class MockGame
     @current_response = []
     @current_turn = 1
     @current_guess_called = false
-    @computer_guess_called = false
+    @guess_called = false
     @current_color = "Red"
   end
 
@@ -32,18 +32,7 @@ class MockGame
     @number_of_turns = @number_of_turns - 1
     @current_guess = guess
     @current_turn = @current_turn + 1
-    #@current_color = @current_color + 1
     return @responses.pop
-  end
-
-  def computer_guess(guess, response, color)
-
-    @computer_guess_called = true
-    @current_guess = guess
-    @current_response = response
-    @current_color = color
-
-    return @guesses.pop
   end
 
   def end_of_game?(current_turn, response)
@@ -69,10 +58,6 @@ class MockGame
 
   def generate_code_called?
     return @generated_code_called
-  end
-
-  def computer_guess_called?
-    return @computer_guess_called
   end
 
 

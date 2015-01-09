@@ -1,6 +1,6 @@
 class MockUserInterface
-  attr_reader :guesses, :response, :result, :guess ,:secret_code
-  
+  attr_reader :response, :result, :guess ,:secret_code
+  attr_accessor :guesses
   def initialize
     @prepare_called = false
     @display_current_turn_called = false
@@ -25,10 +25,6 @@ class MockUserInterface
      @display_current_turn_called = true
    end
 
-  def in_guess_validation
-    @in_guess_validation_called = true
-    @guesses.pop
-  end
    
    def display_game_result(result,secret_code)
      @display_game_result_called = true
@@ -44,11 +40,7 @@ class MockUserInterface
 #    ******* Mock expectations *******
 
 
-   def in_guess_from_user_with_validation_called?
-     return @in_guess_from_user_with_validation_called
-   end
-   
-   def prepare_called?
+  def prepare_called?
     return @prepare_called
   end
   
@@ -64,9 +56,5 @@ class MockUserInterface
      return @display_game_result_called
    end
 
-  def in_guess_validation_called?
-    return @in_guess_validation_called
-  end
-   
   
 end

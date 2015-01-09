@@ -10,6 +10,91 @@ module Mastermind
     COLORS = %w(Red Yellow Blue Green Black White)
 
 
+    def initialize
+      @turn_number = 0
+
+      @color_count = {
+          "Red" => 0,
+          "Yellow" => 0,
+          "Blue" => 0,
+          "Green" => 0,
+          "Black" => 0,
+          "White" => 0
+      }
+
+      @color_counts_made = false
+
+    end
+
+    def guess(response)
+      response = ["", "", "", ""] if response == []
+      guess = []
+
+        if @turn_number < COLORS.length
+          guess = make_solid_color_guess(response, COLORS[@turn_number])
+          @turn_number = @turn_number + 1
+        else
+          guess = make_combination_guess(response)
+        end
+      guess
+      end
+
+
+    def make_solid_color_guess(response, color)
+      response = ["", "", "", ""] if response == []
+      guess = [color,color,color,color]
+      return guess
+      count_colors(response,color)
+
+      return guess
+    end
+
+    def make_combination_guess(response)
+      guess = ["","","",""]
+      new_color_set = get_new_color_set(@color_count)
+      color = get_color_from_new_set(new_color_set)
+      response.each_with_index { |peg, index| guess[index] = color if peg != "Black" }
+    end
+
+    def get_new_color_set(old_color_set)#hash
+      old_color_set.each { |key,value| do_something(value) if key == 'x' }
+      return new_color_set
+    end
+
+    def get_color_from_new_set(new_color_set)#hash
+
+
+      return color
+    end
+
+
+    def make_one_color_guesses(response, color)
+      response = ["", "", "", ""] if response == []
+      guess = [color,color,color,color]
+      return guess
+    end
+
+    def count_colors(response, color)
+      response.each {|peg| @color_count[color] = plus_one(@color_count[color]) if peg == "Black" || peg == "White" }
+
+      return @color_count
+    end
+
+    def plus_one (value)
+      value  + 1
+    end
+
+
+
+
+
+
+
+
+
+
+
+
     def make_guess(response)
       guess_code = [0,0,0,0]
       p response
