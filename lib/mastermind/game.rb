@@ -4,7 +4,7 @@ require_relative 'code_breaker'
 module Mastermind
 
   class Game
-    TURN_MAX = 50
+    TURN_MAX = 50 #8
     attr_reader :won, :code_maker, :secret_code, :code_breaker
     attr_accessor :current_turn, :current_color, :current_guess
 

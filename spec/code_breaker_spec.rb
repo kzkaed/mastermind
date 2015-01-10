@@ -5,79 +5,23 @@ describe Mastermind::CodeBreaker do
 
   let(:code_breaker) {described_class.new}
 
-
-  it 'makes a guess divide and con' do
-    expect(code_breaker.make_guess_divide).to eq(["Red", "Red", "Yellow", "Yellow"])
-  end
-
-  it 'determine best guess if response is empty' do
-    guess_nums = [0, 0, 1, 1]
-    response = [" ", " ", " ", " "]
-    expect(code_breaker.determine_best_guess(guess_nums, response)).to eq(["Blue", "Blue", "Green", "Green"])
-  end
-
-  it 'determine best guess if response is empty next guess' do
-    guess_nums = [2, 2, 3, 3]
-    response = [" ", " ", " ", " "]
-    expect(code_breaker.determine_best_guess(guess_nums, response)).to eq(["Black", "Black", "White", "White"])
-  end
-
-  it 'makes best guess if response is o b b b if change swap ' do
-    guess_nums = [4, 4, 5, 5]
-    response = [" ", "Black", "Black", "Black"]
-    expect(code_breaker.determine_best_guess(guess_nums, response)).to eq(["Black", "Black", "Black", "White"])
-  end
-
-  it 'makes best guess if response is b b w w - if first are correct last are switched' do
-    guess_nums = [4, 4, 4, 5]
-    response = ["Black", "Black", "White", "White"]
-    expect(code_breaker.determine_best_guess(guess_nums, response)).to eq(["Black", "Black", "White", "Black"])
-  end
-
-  it 'wins if response is bbbb does not need to return best_guess' do
-    guess_nums = [2, 2, 3, 3]
-    response = ["Black", "Black", "Black", "Black"]
-    expect(code_breaker.determine_best_guess(guess_nums, response)).to eq("COMPUTER WON")
-  end
-
-  it 'maps number to colors' do
-    guess_nums = [0, 0, 0, 0]
-    expect(code_breaker.map_to_colors(guess_nums)).to eq(["Red", "Red", "Red", "Red"])
-  end
-
-  it 'makes a new guess with yellow color passed in to eliminate that color if black' do
-    guess = ["Red", "Red", "Red", "Red"]
-    response = ["", "", "", ""]
-    color = "Yellow"
-    expect(code_breaker.make_new_guess(guess, response, color)).to eq(["Yellow", "Yellow", "Yellow", "Yellow"])
-  end
-
-  it 'makes a new guess with any color passed in to eliminate that color if response black' do
-    guess = ["Red", "Yellow", "Blue", "Green"]
-    response = ["", "", "", ""]
-    color = "White"
-    expect(code_breaker.make_new_guess(guess, response, color)).to eq(["White", "White", "White", "White"])
-  end
-
   it 'returns color from  color set' do
     guess = ["Red","Red","Red","Yellow"]
     old_color_set = {'Red' => 3, 'Yellow' => 1, 'Blue' => 0, 'Green' => 0, 'Black' => 0, 'White' => 0}
     expect(code_breaker.get_color_set(old_color_set)).to eq(["Red","Yellow"])
   end
 
-
-  it 'tries each color in each position returns each guess'do
+=begin
+  xit 'tries guess with color in all 4 positions returns each guess'do
     secret_code = ["Red","Red","Red","Yellow"]
-    guess = ["Red", "Red", "Red", "Red"]
-    response = ["", "Black", "Black", "Black"]#
+    placeholder = "Blue"
+    guess = ["Red", placeholder, placeholder, placeholder]
+    response = ["", "", "", "Black"]#
     color = "Yellow" #try yellow in each of the positions before next color
-    #expect(code_breaker.refine_guess(guess, response, color)).to eq(["Yellow", "Red", "Red", "Red"])
+    expect(code_breaker.refine_guess(guess, response, color)).to eq(["Red","Yellow", "Red", "Red"])
 
-    #expect(code_breaker.refine_guess(guess, response, color)).to eq(["Red","Yellow", "Red", "Red"])
-    #expect(code_breaker.refine_guess(guess, response, color)).to eq(["Red", "Red", "Yellow", "Red"])
-    #expect(code_breaker.refine_guess(guess, response, color)).to eq(["Red", "Red", "Red", "Yellow"])
   end
-
+=end
 
   it 'has a hash color counts initialzed to 0' do
     expect(code_breaker.color_count).to include('Red' => 0,
@@ -115,23 +59,117 @@ describe Mastermind::CodeBreaker do
   end
 
 
-
-=begin
-  it 'eliminates colors and return counts for those colors' do
-    secret_code = ["Red","Red","Red","Yellow"]
-    guess = ["Red","Red","Red","Red"]
-    response = ["", "Black", "Black", "Black"]
-    color = "Yellow"
-    expect(code_breaker.count_colors(guess, response, color)).to eq([3,1,0,0,0,0])#could map it
-
-  end
-=end
-
   it 'make solid color guess' do
     color = "Red"
     response = ["","","",""]
     expect(code_breaker.make_solid_color_guess(response, color)).to eq(["Red","Red","Red","Red"])
   end
+
+  it 'determines placeholder' do
+    code_breaker.color_count["Red"] = 1
+    code_breaker.color_count["Yellow"] = 1
+    code_breaker.color_count["Blue"] = 1
+    code_breaker.color_count["Green"] = 1
+
+    expect(code_breaker.placeholder).to eq("White")
+  end
+
+  it 'makes a guess using placeholder and 1st color of color_set' do
+      color_set = ["Red","Yellow","Blue","Green"]
+      placeholder = "Black"
+      expect(code_breaker.guess_with_placeholder(color_set,placeholder)).to eq(["Red","Black","Black","Black"])
+  end
+
+  it 'makes a guess using placeholder and 1st color of color_set 2nd position' do
+    code_breaker.color_count["Red"] = 1
+    code_breaker.color_count["Yellow"] = 1
+    code_breaker.color_count["Blue"] = 1
+    code_breaker.color_count["Green"] = 1
+
+    expect(code_breaker.make_combination_guess([])).to eq(["Red","White","White","White"])
+  end
+
+  it 'makes a guess using placeholder and 1st color of color_set 2nd position' do
+    code_breaker.color_count["Red"] = 1
+    code_breaker.color_count["Yellow"] = 1
+
+
+
+
+
+    code_breaker.color_count["Blue"] = 1
+    code_breaker.color_count["Green"] = 1
+
+    expect(code_breaker.make_combination_guess(["", "", "", ""])).to eq(["Red","White","White","White"])
+    expect(code_breaker.make_combination_guess(["", "", "", ""])).to eq(["White","Red","White","White"])
+  end
+
+  it 'makes a guess using placeholder and 1st color of color_set 2nd position' do
+    code_breaker.color_count["Red"] = 1
+    code_breaker.color_count["Yellow"] = 1
+    code_breaker.color_count["Blue"] = 1
+    code_breaker.color_count["Green"] = 1
+
+    expect(code_breaker.make_combination_guess(["", "", "", ""])).to eq(["Red","White","White","White"])
+    expect(code_breaker.make_combination_guess(["", "", "", ""])).to eq(["White","Red","White","White"])
+    code_breaker.make_combination_guess(["Black", "", "", ""])
+    expect(code_breaker.answer).to eq([nil, "Red", nil, nil])
+    expect(code_breaker.color_count["Red"]).to eq(0)
+  end
+
+  it 'makes a guess using placeholder and 1st color of color_set 2nd position' do
+    code_breaker.color_count["Red"] = 1
+    code_breaker.color_count["Yellow"] = 1
+    code_breaker.color_count["Blue"] = 1
+    code_breaker.color_count["Green"] = 1
+
+    expect(code_breaker.make_combination_guess(["", "", "", ""])).to eq(["Red","White","White","White"])
+    expect(code_breaker.make_combination_guess(["", "", "", ""])).to eq(["White","Red","White","White"])
+    expect(code_breaker.make_combination_guess(["Black", "", "", ""])).to eq(["Yellow","White","White","White"])
+    expect(code_breaker.make_combination_guess(["Black", "", "", ""])).to eq(["Blue","White","White","White"])
+    expect(code_breaker.answer).to eq(["Yellow", "Red", nil, nil])
+    expect(code_breaker.color_count["Yellow"]).to eq(0)
+  end
+
+  it 'makes a guess using placeholder and 1st color of color_set 2nd position' do
+    code_breaker.color_count["Red"] = 1
+    code_breaker.color_count["Yellow"] = 1
+    code_breaker.color_count["Blue"] = 1
+    code_breaker.color_count["Green"] = 1
+
+    expect(code_breaker.make_combination_guess(["", "", "", ""])).to eq(["Red","White","White","White"])
+    expect(code_breaker.make_combination_guess(["", "", "", ""])).to eq(["White","Red","White","White"])
+    expect(code_breaker.make_combination_guess(["Black", "", "", ""])).to eq(["Yellow","White","White","White"])
+    expect(code_breaker.make_combination_guess(["Black", "", "", ""])).to eq(["Blue","White","White","White"])
+    expect(code_breaker.make_combination_guess(["", "", "", ""])).to eq(["White","Blue","White","White"])
+    expect(code_breaker.make_combination_guess(["", "", "", ""])).to eq(["White","White","Blue","White"])
+    expect(code_breaker.make_combination_guess(["", "", "", ""])).to eq(["White","White","White","Blue"])
+    expect(code_breaker.make_combination_guess(["Black", "", "", ""])).to eq(["Green","White","White","White"])
+    expect(code_breaker.make_combination_guess(["", "", "", ""])).to eq(["White","Green","White","White"])
+    expect(code_breaker.make_combination_guess(["", "", "", ""])).to eq(["White","White","Green","White"])
+    expect(code_breaker.make_combination_guess(["Black", "", "", ""])).to eq(["Yellow","Red","Green","Blue"])
+    expect(code_breaker.answer).to eq(["Yellow", "Red", "Green", "Blue"])
+    expect(code_breaker.color_count["Green"]).to eq(0)
+  end
+
+  it 'makes a guess where response is more than one black' do
+    code_breaker.color_count["Red"] = 4
+    end
+
+
+  xit 'makes a guess where response is more than one black' do
+    code_breaker.color_count["Red"] = 4
+    expect(code_breaker.make_combination_guess(["", "", "", ""])).to eq(["Red","White","White","White"])
+    expect(code_breaker.make_combination_guess(["Black", "", "", ""])).to eq(["White","Red","White","White"])
+    expect(code_breaker.make_combination_guess(["", "Black", "", ""])).to eq(["White","White","Red","White"])
+    expect(code_breaker.make_combination_guess(["", "", "Black", ""])).to eq(["White","White","White","Red"])
+
+
+
+    expect(code_breaker.answer).to eq(["Red", "Red", "Red", "Red"])
+    expect(code_breaker.color_count["Red"]).to eq(0)
+  end
+
 
 end
 

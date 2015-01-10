@@ -120,6 +120,7 @@ class Console
 
     def out_guess(guess)
       color_output_array = translate_to_color_pegs(guess)
+      #puts "guess:#{guess}"
       color_output_string = format_out(color_output_array)
       out "Your guess is #{color_output_string}"
     end
