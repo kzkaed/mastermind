@@ -6,12 +6,18 @@ module Mastermind
   class CodeBreaker
 
     attr_reader :response, :color_count, :answer
+    attr_accessor :guess_color_index, :count_color_index, :guess_index, :answer_index
 
     COLORS = %w(Red Yellow Blue Green Black White)
 
 
     def initialize
-      @turn_number = 0
+      @guess_number = 0
+      @guess_color_index = 0
+      @count_color_index = 0
+
+      @permutations = []
+
 
       @color_count = {
           "Red" => 0,
@@ -21,6 +27,7 @@ module Mastermind
           "Black" => 0,
           "White" => 0
       }
+
       @index_of_guess = 0
       @answer = [nil, nil, nil, nil]
 
@@ -30,36 +37,106 @@ module Mastermind
       response = ["", "", "", ""] if response == []
       guess = []
 
-        if @turn_number <= COLORS.length
-          if @turn_number == 6
-            count_colors(response, COLORS[@turn_number-1])#only count colors
-            guess = make_combination_guess(response)
-          else
-            guess = make_solid_color_guess(response, COLORS[@turn_number])
-            count_colors(response, COLORS[@turn_number-1])#being counted by new guess
-          end
-          @turn_number = @turn_number + 1
-        else
-          puts "ELSE"
-          guess = make_combination_guess(response)
-
+      if @guess_number <= 6
+        if @guess_number == 0
+          guess = make_solid_color_guess(color_for_guess)
+        elsif @guess_number < 6 && @guess_number > 0
+          count_colors(response, color_to_count)
+          guess = make_solid_color_guess(color_for_guess)
+        elsif @guess_number == 6
+          count_colors(response, color_to_count)
+          fine_just_use_list
+          guess = make_guess_from_permutations(response)
         end
+        @guess_number = @guess_number + 1
+      else
+        guess = make_guess_from_permutations(response)
+      end
+
       guess
     end
 
+    def color_for_guess
+      color = COLORS[@guess_color_index]
+      @guess_color_index = @guess_color_index + 1
 
-    def make_solid_color_guess(response, color)
-      response = ["", "", "", ""] if response == []
-      guess = [color,color,color,color]
-      return guess
+      color
+    end
+
+    def color_to_count
+      color = COLORS[@count_color_index]
+      @count_color_index = @count_color_index + 1
+
+      color
+    end
+
+    def make_solid_color_guess(color)
+      [color, color, color, color]
+    end
+
+    def make_guess_from_permutations(response)
+      guess = ["","","",""]
+
+      if response != ["Black","Black","Black","Black"]
+        guess = @permutations.pop
+      end
+
+      guess
+    end
+
+    def fine_just_use_list
+      @permutations = possible_colors.permutation.to_a
+    end
+
+    def possible_colors
+      color_array = []
+
+      @color_count.each do |color, occurrence|
+         if occurrence > 0
+           count = get_color_count(color)
+           count.times do
+            color_array << color
+           end
+         end
+       end
+
+      color_array
+    end
+
+    def placeholder
+      color = nil
+
+      @color_count.each do |key, value|
+        if value == 0
+          color = key
+        end
+      end
+
+      @placeholder ||= color
+    end
+
+    def get_color_count(color)
+      @color_count.each { |key, value| return value if key == color }
+    end
+
+    def count_colors(response, color)
+      response.each do |peg|
+        if peg == "Black" || peg == "White"
+          @color_count[color] = plus_one(@color_count[color])
+        end
+      end
+
+      @color_count
+    end
+
+    def plus_one (value)
+      value + 1
     end
 
     def make_combination_guess(response)
       guess = [placeholder, placeholder, placeholder, placeholder]
 
       if response.include?("Black")
-        p "HERE",response
-        p "Answer", @answer
         @answer[@index_of_guess - 1] = first_unplaced_color
         @color_count[first_unplaced_color] = @color_count[first_unplaced_color] - 1
         @index_of_guess = 0
@@ -68,75 +145,23 @@ module Mastermind
         guess[@index_of_guess] = first_unplaced_color
       end
       @index_of_guess = @index_of_guess + 1
+
       return guess if @answer.any? {|a| a.nil?}
       return @answer
     end
 
-    def placeholder
-      color = nil
-      @color_count.each do |key, value|
-        if value == 0
-          color =  key
-        end
-      end
-      @placeholder ||= color
-    end
-
     def first_unplaced_color
-      #p @color_count
-      @color_count.each {|key, value| return key if value > 0}
-    end
-
-    def guess_with_placeholder(color_set,placeholder)
-      #[red placeholder placeholder placeholder]
-      guess =[color_set[0],placeholder, placeholder, placeholder]
+      @color_count.each { |key, value| return key if value > 0 }
     end
 
     def get_color_set(old_color_set)
+      color_set = old_color_set.map { |key, value| key if value > 0 }
+      color_set.compact!
 
-      #color_set = old_color_set.select {|key, value| key if value > 0}#return hash
-
-      color_set = old_color_set.map {|key, value| key if value > 0}
-      color_set.compact!#return array
-      p "color_set return",color_set
-      return color_set
-    end
-
-    def get_color_from_set(color_set)#hash
-      color_set_size = color_set.length
-
-      return color
+      color_set
     end
 
 
-    def count_colors(response, color)
-      response.each do |peg|
-        if peg == "Black" || peg == "White"
-          @color_count[color] = plus_one(@color_count[color])
-        end
-      end
-      @color_count
-    end
-
-    def plus_one (value)
-      value  + 1
-    end
-
-
-    def make_guess(response)
-      guess_code = [0,0,0,0]
-      p response
-
-      if response == ["","","",""]
-        guess_code.map! { |num| num + 1}
-        return guess = map_to_colors(guess_code)
-        if response == ["","","",""]
-          guess_code.map! { |num| num + 1}
-        end
-      end
-
-      guess = map_to_colors(guess_code)
-    end
 
 
 
