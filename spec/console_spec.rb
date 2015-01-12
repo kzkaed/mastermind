@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'mastermind/console'
-require 'mastermind/user_io'
 require 'mastermind/color_string'
 require 'stringio'
 
