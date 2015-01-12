@@ -5,8 +5,8 @@ module Mastermind
 
   class CodeBreaker
 
-    attr_reader :response, :color_count, :answer
-    attr_accessor :guess_color_index, :count_color_index, :guess_index, :answer_index
+    attr_reader  :color_count
+    attr_accessor :guess_color_index, :count_color_index
 
     COLORS = %w(Red Yellow Blue Green Black White)
 
@@ -18,7 +18,6 @@ module Mastermind
 
       @permutations = []
 
-
       @color_count = {
           "Red" => 0,
           "Yellow" => 0,
@@ -27,9 +26,6 @@ module Mastermind
           "Black" => 0,
           "White" => 0
       }
-
-      @index_of_guess = 0
-      @answer = [nil, nil, nil, nil]
 
     end
 
@@ -70,8 +66,22 @@ module Mastermind
       color
     end
 
+    def count_colors(response, color)
+      response.each do |peg|
+        if peg == "Black" || peg == "White"
+          @color_count[color] = plus_one(@color_count[color])
+        end
+      end
+
+      @color_count
+    end
+
     def make_solid_color_guess(color)
       [color, color, color, color]
+    end
+
+    def fine_just_use_list
+      @permutations = possible_colors.permutation.to_a
     end
 
     def make_guess_from_permutations(response)
@@ -82,10 +92,6 @@ module Mastermind
       end
 
       guess
-    end
-
-    def fine_just_use_list
-      @permutations = possible_colors.permutation.to_a
     end
 
     def possible_colors
@@ -103,64 +109,16 @@ module Mastermind
       color_array
     end
 
-    def placeholder
-      color = nil
-
-      @color_count.each do |key, value|
-        if value == 0
-          color = key
-        end
-      end
-
-      @placeholder ||= color
-    end
-
     def get_color_count(color)
       @color_count.each { |key, value| return value if key == color }
     end
 
-    def count_colors(response, color)
-      response.each do |peg|
-        if peg == "Black" || peg == "White"
-          @color_count[color] = plus_one(@color_count[color])
-        end
-      end
 
-      @color_count
-    end
+    private
 
     def plus_one (value)
       value + 1
     end
-
-    def make_combination_guess(response)
-      guess = [placeholder, placeholder, placeholder, placeholder]
-
-      if response.include?("Black")
-        @answer[@index_of_guess - 1] = first_unplaced_color
-        @color_count[first_unplaced_color] = @color_count[first_unplaced_color] - 1
-        @index_of_guess = 0
-        guess[@index_of_guess] = first_unplaced_color
-      else
-        guess[@index_of_guess] = first_unplaced_color
-      end
-      @index_of_guess = @index_of_guess + 1
-
-      return guess if @answer.any? {|a| a.nil?}
-      return @answer
-    end
-
-    def first_unplaced_color
-      @color_count.each { |key, value| return key if value > 0 }
-    end
-
-    def get_color_set(old_color_set)
-      color_set = old_color_set.map { |key, value| key if value > 0 }
-      color_set.compact!
-
-      color_set
-    end
-
 
 
 

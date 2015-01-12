@@ -4,28 +4,43 @@ The game is played using:
 ruby bin/run.rb      human player
 ruby bin/run.rb C    computer player
 
-A secret code is generated
-Try to guess the code of 4 colors (color pegs) from RED YELLOW BLUE GREEN BLACK WHITE
-A key peg response will be returned
-BLACK indicates that one color peg was the correct color in the correct position
-WHITE indicates that one color peg was the correct color but NOT correct position
+QUICK VERSION
+1) A secret code is generated
+2) Try to guess the code of 4 colors (color pegs) from RED YELLOW BLUE GREEN BLACK WHITE
+3) A key peg response will be returned
+
+BLACK indicates that one color peg is the correct color and the correct position
+WHITE indicates that one color peg is the correct color but NOT correct position
 o indicates no match in color or position
 
-If the secret code is: Red Yellow Blue Green
-A guess will look like: Red Red Yellow Yellow
-A response will look like: o o Black White
+4) guess again, WIN or LOOSE
 
-The codebreaker tries to guess the pattern, in both order and color, within MAX turns. Each
-guess is made by typing into console. Once placed, the codemaker provides feedback by
-placing from zero to four key pegs. A black key peg is place for each code peg from the guess which is correct
-in both color and position. A white key peg indicates the existence
- of a correct color code peg placed in the wrong position.[4]
+LONGER VERSION
+The codebreaker tries to guess the pattern, in both order and color, within MAX turns.
+Each guess is made by typing into console.
+Once placed, the codemaker provides feedback by placing from zero to four key pegs.
+-A black key peg is placed for each code peg from the guess which is correct
+in both color and position.
+-A white key peg indicates the existence of a correct color code peg placed in the wrong position.[4]
+-A o indicates zero
+
+EXAMPLE 1
+If the secret code is:      Red Yellow Blue Green
+A guess will look like:     Red Red Yellow Yellow
+A response will look like:  o o Black White
 
 If there are duplicate colors in the guess, they cannot all be awarded a key peg unless they correspond to the same
-number of duplicate colors in the hidden code. For example, if the hidden code is red-red-blue-blue and the
+number of duplicate colors in the hidden code.
+
+EXAMPLE 2
+For example, if the hidden code is red-red-blue-blue and the
 player guesses red-red-red-blue, the codemaker will award two "black" key pegs for the two correct reds,
 nothing for the third red as there is not a third red in the code, and a "black" key peg for the blue.
 No indication is given of the fact that the code also includes a second blue.[5]
+
+code:      Red Red Blue Blue
+guess:     Red Red Red Blue
+response:  o Black Black Black
 
 Once feedback is provided, another guess is made; guesses and feedback continue to alternate until either the
 codebreaker guesses correctly, or MAX incorrect guesses are made.
