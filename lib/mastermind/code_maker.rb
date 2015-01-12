@@ -44,6 +44,7 @@ module Mastermind
       response.sort
     end
 
+
     private
 
     def generate_random_code
@@ -70,7 +71,7 @@ module Mastermind
 
           response[index] = "Black"
           guess_clone[index] = GUESS_MATCH
-          secret_code_clone[index] = CODE_MATCH #refrencing the same thing when secret_code assigned to guess_array?
+          secret_code_clone[index] = CODE_MATCH
 
         end
       end

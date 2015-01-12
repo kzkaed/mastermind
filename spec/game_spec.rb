@@ -13,15 +13,7 @@ describe Mastermind::Game do
   end
 
   it 'finds end of game with current_guess maximum 50' do
-    expect(game.end_of_game?(50, ["", "", "", ""])).to eq(true)
-  end
-
-  it 'won? return true if won game' do
-    expect(game.won?(["Black", "Black", "Black", "Black"])).to eq(true)
-  end
-
-  it 'end_of_game lost will set won to false' do
-    expect(game.won?(["", "", "", ""])).to eq(false)
+    expect(game.end_of_game?(30, ["", "", "", ""])).to eq(true)
   end
 
   it "generates the secret code" do

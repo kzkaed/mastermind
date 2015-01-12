@@ -20,7 +20,6 @@ describe Mastermind::Runner do
     expect(game.generate_code_called?).to eq(true)
   end
 
-  
   it 'response start as empty array' do
     expect(runner.response).to eq([])
   end
@@ -73,5 +72,6 @@ describe Mastermind::Runner do
     expect(game.take_turn_called?).to eq(true)
     expect(game.current_guess).to eq(guess)
   end
+
 
 end
