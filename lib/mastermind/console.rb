@@ -8,7 +8,7 @@ module Mastermind
 class Console
     
     attr_accessor :color_string
-    attr_reader :game, :incorrect_color_message, :console_color_pegs, :console_key_pegs
+    attr_reader :incorrect_color_message, :console_color_pegs, :console_key_pegs
 
     COLORS = %w(Red Yellow Blue Green Black White)
     WELCOME = 'Welcome to Mastermind'
@@ -42,7 +42,6 @@ class Console
       out_current_guess_number(guess_number)
     end
 
-    # how to fully test this - use a stub or mock
     def in_guess_validation
       guess = ["","","",""]
       while (guess == ["","","",""])
@@ -82,7 +81,7 @@ class Console
       false
     end
 
-    def incorrect_color_message?(guess)#private?
+    def incorrect_color_message?(guess)
       return true if guess == INCORRECT_COLOR
       false
     end
@@ -101,7 +100,7 @@ class Console
       puts(message)
     end
 
-    def in_guess#private?
+    def in_guess
       guess = []
       (1..4).each do |prompt_num|
         put_prompt(prompt_num)
@@ -110,7 +109,7 @@ class Console
       guess
     end
 
-    def put_prompt(guess_num)#private?
+    def put_prompt(guess_num)
       out "Enter color #{guess_num}"
     end
 
@@ -120,7 +119,6 @@ class Console
 
     def out_guess(guess)
       color_output_array = translate_to_color_pegs(guess)
-      #puts "guess:#{guess}"
       color_output_string = format_out(color_output_array)
       out "Your guess is #{color_output_string}"
     end

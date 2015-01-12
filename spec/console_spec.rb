@@ -53,19 +53,17 @@ describe Mastermind::Console do
     expect($stdout.string).to eq(message+"\n")
   end
 
-   it 'puts to console INCORRECT_COLOR_MESSAGE using out' do
+  it 'puts to console INCORRECT_COLOR_MESSAGE using out' do
     message = Mastermind::Console::INCORRECT_COLOR_MESSAGE
     console.out(message)
     expect($stdout.string).to eq(message+"\n")
-   end
+  end
 
-
-  
   it 'checks for INCORRECT_COLOR message' do
-   guess = ["Red","Red","Red","Red"]
-   expect(console.incorrect_color_message?(guess)).to eq(false)
-   expect(console.incorrect_color_message?(Mastermind::Console::INCORRECT_COLOR)).to eq(true)
- end
+    guess = ["Red", "Red", "Red", "Red"]
+    expect(console.incorrect_color_message?(guess)).to eq(false)
+    expect(console.incorrect_color_message?(Mastermind::Console::INCORRECT_COLOR)).to eq(true)
+  end
 
   it 'prepares startup messages' do
     console.prepare
@@ -76,7 +74,7 @@ describe Mastermind::Console do
     string5 = ", 8 tries to win.\n"
     expect($stdout.string).to eq("#{string1}#{string2}#{string3}#{string4}#{string5}")
   end
-  
+
   it 'lets the user know what the current guess number is' do
     console.display_current_turn(4)
     expect($stdout.string).to eq("Guess number 4\n")
@@ -108,30 +106,27 @@ describe Mastermind::Console do
   end
 
 
-it 'displays game result' do
-  console.display_game_result(true,["Red","Yellow", "Blue", "Green"])
-  expect($stdout.string).to match("YOU WON")
-end
+  it 'displays game result' do
+    console.display_game_result(true, ["Red", "Yellow", "Blue", "Green"])
+    expect($stdout.string).to match("YOU WON")
+  end
 
 
-
-it 'receives guess input' do
-  $stdin.string = "Blue"
-  expect(console.in_guess).to eq(["Blue",nil, nil, nil])
-end
-
+  it 'receives guess input' do
+    $stdin.string = "Blue"
+    expect(console.in_guess).to eq(["Blue", nil, nil, nil])
+  end
 
 
   it 'translates the string arrays to color output' do
 
-      expect(console.translate_to_color_pegs(["Red","Red","Red","Red"])).to eq([
-                                                                              "\033[31mRed\033[0m",
-                                                                              "\033[31mRed\033[0m",
-                                                                              "\033[31mRed\033[0m",
-                                                                              "\033[31mRed\033[0m"])
+    expect(console.translate_to_color_pegs(["Red", "Red", "Red", "Red"])).to eq([
+                                                                                    "\033[31mRed\033[0m",
+                                                                                    "\033[31mRed\033[0m",
+                                                                                    "\033[31mRed\033[0m",
+                                                                                    "\033[31mRed\033[0m"])
 
   end
-
 
 
   it 'formats output to console in color return a string' do
@@ -149,22 +144,22 @@ end
   end
 
   it 'return horizontal array of all color pegs' do
-    output_array = console.translate_to_color_pegs(["Red","Yellow","Blue","Green","Black","White"])
-    expect(console.format_out(output_array)).to eq( " \033[31mRed\033[0m  \033[33mYellow\033[0m  \033[34mBlue\033[0m  \033[32mGreen\033[0m  \033[30mBlack\033[0m  \033[37mWhite\033[0m ")
+    output_array = console.translate_to_color_pegs(["Red", "Yellow", "Blue", "Green", "Black", "White"])
+    expect(console.format_out(output_array)).to eq(" \033[31mRed\033[0m  \033[33mYellow\033[0m  \033[34mBlue\033[0m  \033[32mGreen\033[0m  \033[30mBlack\033[0m  \033[37mWhite\033[0m ")
   end
 
   it 'formats user input to be validated' do
-    guess = ["red","rEd","reD","RED"]
-    expect(console.format_guess(guess)).to eq(["Red","Red","Red","Red"])
+    guess = ["red", "rEd", "reD", "RED"]
+    expect(console.format_guess(guess)).to eq(["Red", "Red", "Red", "Red"])
   end
 
   it 'checks guess contains correct color input' do
-      guess = ["Purple"," ","!","Purple Brown"]
-      expect(console.are_colors_incorrect?(guess)).to eq(true)
- end
+    guess = ["Purple", " ", "!", "Purple Brown"]
+    expect(console.are_colors_incorrect?(guess)).to eq(true)
+  end
 
   it 'validates guess also formats' do
-    expect(console.validate(["red","RED","reD", "Red"])).to eq(["Red","Red","Red","Red"])
+    expect(console.validate(["red", "RED", "reD", "Red"])).to eq(["Red", "Red", "Red", "Red"])
   end
 
   it 'test if colors are incorrect' do
@@ -175,7 +170,7 @@ end
   end
 
   it 'returns message if guess is not a correct color ' do
-    expect(console.validate(["Cyan","Red","Red" "Red"])).to eq(Mastermind::Console::INCORRECT_COLOR)
+    expect(console.validate(["Cyan", "Red", "Red" "Red"])).to eq(Mastermind::Console::INCORRECT_COLOR)
   end
 
   it 'in guess validation' do
