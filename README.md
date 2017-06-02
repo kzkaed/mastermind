@@ -1,6 +1,6 @@
 # Mastermind
 
-TODO: Write a gem description
+The game, Mastermind
 
 ## Installation
 
@@ -15,10 +15,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install mastermind
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Contributing
 
